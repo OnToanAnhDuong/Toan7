@@ -637,9 +637,10 @@ function checkCameraAccess() {
     }
 
     if (!base64Image && !studentFileInput?.files?.length) {
-        alert('Vui lòng chọn hoặc chụp ảnh bài làm của học sinh.');
-        return;
-    }
+    alert('Vui lòng chọn hoặc chụp ảnh bài làm của học sinh.');
+    return;
+}
+
 
     // Ưu tiên ảnh từ camera, nếu không có thì sử dụng ảnh tải lên từ file
     const imageToProcess = base64Image || (studentFileInput.files.length > 0 ? await getBase64(studentFileInput.files[0]) : null);
@@ -746,17 +747,17 @@ function checkCameraAccess() {
             .catch(error => console.error('Lỗi khi kiểm tra thiết bị camera:', error));
     }
 
-    captureButton.addEventListener('click', () => {
-        const context = canvas.getContext('2d');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        base64Image = canvas.toDataURL('image/png');
-        img.src = base64Image;
-        img.style.display = 'block';
-        console.log('Ảnh chụp (Base64):', base64Image);
-    });
+  captureButton.addEventListener('click', () => {
+    const context = canvas.getContext('2d');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    base64Image = canvas.toDataURL('image/png');
+    img.src = base64Image;
+    img.style.display = 'block';
+    console.log('Ảnh chụp (Base64):', base64Image);
 });
+
 
 
 
