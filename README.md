@@ -251,9 +251,6 @@
         document.getElementById('problemText').textContent = 'Không thể tải bài toán.';
     }
 }
-
-
-
         function parseGoogleSheetData(jsonData) {
     const data = jsonData.table.rows;
     return data.map(row => ({
@@ -261,8 +258,6 @@
         problem: row.c[1]?.v.replace(/\r\n|\r|\n/g, '\n') || '' // Cột đề bài
     })).filter(item => item.problem && item.index);
 }
-
-
         function displayNextProblem() {
     if (problems.length > 0) {
         // Nếu chỉ số hiện tại vượt quá số bài, quay lại bài đầu tiên (tuỳ chọn)
@@ -273,8 +268,7 @@
         // Lấy bài tập theo thứ tự
         currentProblem = problems[currentProblemIndex];
         currentProblemIndex++; // Tăng chỉ số lên bài tiếp theo
-
-        document.getElementById('problemText').innerHTML = formatProblemText(currentProblem.problem);
+document.getElementById('problemText').innerHTML = formatProblemText(currentProblem.problem);
         MathJax.typesetPromise([document.getElementById('problemText')]).catch(function (err) {
             console.error('MathJax rendering error:', err);
         });
@@ -313,7 +307,6 @@ function checkCameraAccess() {
         })
         .catch(error => console.error('Lỗi khi kiểm tra thiết bị camera:', error));
 }
-
 
         // Hàm cập nhật số bài đã làm và điểm trung bình
         function updateProgress(newScore) {
@@ -718,8 +711,6 @@ function checkCameraAccess() {
     const captureButton = document.getElementById('captureButton');
     const canvas = document.getElementById('photoCanvas');
     const img = document.getElementById('capturedImage');
-    let base64Image = '';
-
     checkCameraAccess(); // Kiểm tra thiết bị
     startCamera(); // Bắt đầu camera
 
