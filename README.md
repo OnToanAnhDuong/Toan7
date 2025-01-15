@@ -714,7 +714,7 @@ function checkCameraAccess() {
     const captureButton = document.getElementById('captureButton');
     const canvas = document.getElementById('photoCanvas');
     const img = document.getElementById('capturedImage');
-    let base64Image = '';
+ 
 
     checkCameraAccess(); // Kiểm tra thiết bị
     startCamera(); // Bắt đầu camera
