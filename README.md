@@ -637,8 +637,8 @@ function checkCameraAccess() {
 
     // Ưu tiên ảnh từ camera, nếu không có thì sử dụng ảnh tải lên từ file
     const imageToProcess = base64Image 
-    ? `data:image/png;base64,${base64Image}` 
-    : (studentFileInput.files.length > 0 ? await getBase64(studentFileInput.files[0]) : null);
+    ? `data:image/jpeg;base64,${base64Image}` 
+    : (studentFileInput.files.length > 0 ? `data:image/png;base64,${await getBase64(studentFileInput.files[0])}` : null);
 
 
     if (!imageToProcess) {
@@ -754,6 +754,8 @@ function checkCameraAccess() {
     img.style.display = 'block';
 
     console.log('Ảnh chụp (Base64):', base64Image); // Kiểm tra giá trị
+    console.log('Base64 từ camera:', `data:image/jpeg;base64,${base64Image}`);
+console.log('Kích thước Base64:', base64Image.length);
 });
 
 
