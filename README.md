@@ -447,7 +447,8 @@ function checkCameraAccess() {
                     {
                         parts: [
                             { text: promptText },
-                            { inline_data: { mime_type: "image/jpeg", data: base64Image } }
+                            { inline_data: { mime_type: "image/jpeg", data: base64Image.replace(/^data:image\/jpeg;base64,/, '') } }
+
                         ]
                     }
                 ]
@@ -637,8 +638,9 @@ function checkCameraAccess() {
 
     // Ưu tiên ảnh từ camera, nếu không có thì sử dụng ảnh tải lên từ file
     const imageToProcess = base64Image 
-    ? `data:image/jpeg;base64,${base64Image}` 
-    : (studentFileInput.files.length > 0 ? `data:image/png;base64,${await getBase64(studentFileInput.files[0])}` : null);
+    ? base64Image 
+    : (studentFileInput.files.length > 0 ? await getBase64(studentFileInput.files[0]) : null);
+
 
 
     if (!imageToProcess) {
@@ -747,18 +749,12 @@ function checkCameraAccess() {
     canvas.height = video.videoHeight;
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Cập nhật biến base64Image toàn cục
-    base64Image = canvas.toDataURL('image/jpeg', 0.9).split(',')[1];
+    // Chuyển đổi sang Base64
+    base64Image = canvas.toDataURL('image/jpeg', 0.9);
 
-    img.src = `data:image/png;base64,${base64Image}`;
-    img.style.display = 'block';
-
-    console.log('Ảnh chụp (Base64):', base64Image); // Kiểm tra giá trị
-    console.log('Base64 từ camera:', `data:image/jpeg;base64,${base64Image}`);
-console.log('Kích thước Base64:', base64Image.length);
+    console.log('Base64 từ camera:', base64Image.slice(0, 100)); // Log 100 ký tự đầu
+    console.log('Kích thước Base64:', base64Image.length);
 });
-
-
 });
 
 
