@@ -748,7 +748,7 @@ function checkCameraAccess() {
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     // Cập nhật biến base64Image toàn cục
-    base64Image = canvas.toDataURL('image/png').split(',')[1]; // Chỉ lấy phần Base64
+    base64Image = canvas.toDataURL('image/jpeg', 0.9).split(',')[1];
 
     img.src = `data:image/png;base64,${base64Image}`;
     img.style.display = 'block';
