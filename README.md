@@ -107,7 +107,9 @@
 
 #cameraStream {
     width: 100%;
-    max-width: 400px;
+    height: 100%;
+    max-width: 300px;
+    max-height: 450px;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
