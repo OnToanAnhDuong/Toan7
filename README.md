@@ -710,72 +710,7 @@ function checkCameraAccess() {
         alert('Vui lòng nhập số thứ tự bài cần chọn.');
     	}
 	});
-	document.addEventListener('DOMContentLoaded', () => {
-    const video = document.getElementById('cameraStream');
-    const captureButton = document.getElementById('captureButton');
-    const canvas = document.getElementById('photoCanvas');
-    const img = document.getElementById('capturedImage');
-
-    // Hàm khởi động camera
-    async function startCamera() {
-        try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = stream;
-        } catch (err) {
-            console.error('Lỗi khi mở camera:', err);
-            if (err.name === 'NotAllowedError') {
-                alert('Bạn chưa cấp quyền truy cập camera.');
-            } else if (err.name === 'NotFoundError') {
-                alert('Không tìm thấy thiết bị camera.');
-            } else {
-                alert('Lỗi không xác định. Vui lòng thử lại.');
-            }
-        }
-    }
-
-    // Kiểm tra thiết bị camera
-    function checkCameraAccess() {
-        navigator.mediaDevices.enumerateDevices()
-            .then(devices => {
-                const videoDevices = devices.filter(device => device.kind === 'videoinput');
-                if (videoDevices.length === 0) {
-                    alert('Không tìm thấy thiết bị camera.');
-                }
-            })
-            .catch(error => console.error('Lỗi khi kiểm tra thiết bị camera:', error));
-    }
-
-    // Bắt sự kiện chụp ảnh
-    captureButton.addEventListener('click', () => {
-        const context = canvas.getContext('2d');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-
-        // Chụp khung hình từ camera và hiển thị trên canvas
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        // Tạo URL Blob cho ảnh
-        canvas.toBlob((blob) => {
-            const url = URL.createObjectURL(blob);
-            img.src = url; // Hiển thị ảnh chụp
-            img.style.display = 'block';
-
-            // Chuyển ảnh sang Base64 để gửi
-            const reader = new FileReader();
-            reader.onload = () => {
-                base64Image = reader.result.split(',')[1]; // Lưu Base64
-                console.log('Ảnh chụp Base64:', base64Image.substring(0, 100), '...');
-            };
-            reader.readAsDataURL(blob);
-        }, 'image/jpeg', 0.9); // Định dạng ảnh JPEG với chất lượng 90%
-    });
-
-    // Khởi chạy các bước kiểm tra và mở camera
-    checkCameraAccess();
-    startCamera();
-});
-
-
+	
 });
 
 
