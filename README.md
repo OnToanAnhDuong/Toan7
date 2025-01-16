@@ -715,10 +715,8 @@ function checkCameraAccess() {
     const captureButton = document.getElementById('captureButton');
     const canvas = document.getElementById('photoCanvas');
     const img = document.getElementById('capturedImage');
-   
-    checkCameraAccess(); // Kiểm tra thiết bị
-    startCamera(); // Bắt đầu camera
 
+    // Hàm khởi động camera
     async function startCamera() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -735,6 +733,7 @@ function checkCameraAccess() {
         }
     }
 
+    // Kiểm tra thiết bị camera
     function checkCameraAccess() {
         navigator.mediaDevices.enumerateDevices()
             .then(devices => {
@@ -746,23 +745,34 @@ function checkCameraAccess() {
             .catch(error => console.error('Lỗi khi kiểm tra thiết bị camera:', error));
     }
 
+    // Bắt sự kiện chụp ảnh
     captureButton.addEventListener('click', () => {
-    const context = canvas.getContext('2d');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
 
-    // Vẽ khung hình từ camera vào canvas
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        // Chụp khung hình từ camera và hiển thị trên canvas
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // Chuyển đổi ảnh sang Base64 định dạng JPEG, với nén 90%
-    base64Image = canvas.toDataURL('image/jpeg', 0.9);
+        // Tạo URL Blob cho ảnh
+        canvas.toBlob((blob) => {
+            const url = URL.createObjectURL(blob);
+            img.src = url; // Hiển thị ảnh chụp
+            img.style.display = 'block';
 
-    // Hiển thị ảnh chụp trên giao diện
-    img.src = base64Image;
-    img.style.display = 'block';
+            // Chuyển ảnh sang Base64 để gửi
+            const reader = new FileReader();
+            reader.onload = () => {
+                base64Image = reader.result.split(',')[1]; // Lưu Base64
+                console.log('Ảnh chụp Base64:', base64Image.substring(0, 100), '...');
+            };
+            reader.readAsDataURL(blob);
+        }, 'image/jpeg', 0.9); // Định dạng ảnh JPEG với chất lượng 90%
+    });
 
-    // Log Base64 của ảnh (chỉ log một phần để kiểm tra)
-    console.log('Ảnh chụp (Base64):', base64Image.substring(0, 100), '...');
+    // Khởi chạy các bước kiểm tra và mở camera
+    checkCameraAccess();
+    startCamera();
 });
 
 
