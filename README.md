@@ -746,29 +746,13 @@ function checkCameraAccess() {
             .catch(error => console.error('Lỗi khi kiểm tra thiết bị camera:', error));
     }
 
-   captureButton.addEventListener('click', () => {
-    if (!video.videoWidth || !video.videoHeight) {
-        alert('Camera chưa sẵn sàng. Vui lòng đợi.');
-        return;
-    }
-const context = canvas.getContext('2d');
-
-    // Đặt kích thước của canvas theo đúng kích thước của video
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    // Vẽ khung hình từ video lên canvas
-    const context = canvas.getContext('2d');
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Chuyển canvas thành Base64 (JPEG, chất lượng 0.9)
-    const base64Data = canvas.toDataURL('image/jpeg', 0.9);
-    base64Image = base64Data.split(',')[1]; // Loại bỏ tiền tố "data:image/jpeg;base64,"
-
-    console.log('Base64 Image:', base64Image.substring(0, 100), '...'); // Log 100 ký tự đầu để kiểm tra
-    img.src = base64Data; // Hiển thị ảnh chụp
-    img.style.display = 'block';
-});
-
+ const context = canvas.getContext('2d');
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
+   
+    // Đặt kích thước canvas
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
 });
 
             // Các đoạn mã ngăn chặn xem mã nguồn và bảo vệ nội dung
