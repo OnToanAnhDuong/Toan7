@@ -746,23 +746,38 @@ function checkCameraAccess() {
             .catch(error => console.error('Lỗi khi kiểm tra thiết bị camera:', error));
     }
 
-   captureButton.addEventListener('click', () => {
+  captureButton.addEventListener('click', () => {
     if (!video.videoWidth || !video.videoHeight) {
         alert('Camera chưa sẵn sàng. Vui lòng đợi.');
         return;
     }
 
-    const maxWidth = 300; // Kích thước chiều rộng tối đa
-    const maxHeight = 800;
-    const scaleFactor = video.videoWidth > maxWidth ? maxWidth / video.videoWidth : 1;
+    const targetWidth = 600; // Chiều rộng mong muốn (có thể thay đổi)
+    const targetHeight = targetWidth * 1.5; // Chiều cao theo tỷ lệ 1,5
 
-    // Cập nhật kích thước canvas để giới hạn chiều rộng
-    canvas.width = video.videoWidth * scaleFactor;
-    canvas.height = video.videoHeight * scaleFactor;
+    const scaleFactor = Math.min(
+        targetWidth / video.videoWidth,
+        targetHeight / video.videoHeight
+    );
 
-    // Vẽ khung hình từ video lên canvas
+    // Tính kích thước canvas với tỷ lệ mục tiêu
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+
     const context = canvas.getContext('2d');
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Tính toán để căn giữa nội dung
+    const offsetX = (video.videoWidth - targetWidth / scaleFactor) / 2;
+    const offsetY = (video.videoHeight - targetHeight / scaleFactor) / 2;
+
+    // Vẽ ảnh từ video lên canvas, cắt theo tỷ lệ
+    context.drawImage(
+        video,
+        offsetX, offsetY, // Điểm bắt đầu cắt
+        targetWidth / scaleFactor, targetHeight / scaleFactor, // Kích thước cắt
+        0, 0, // Điểm bắt đầu vẽ trên canvas
+        canvas.width, canvas.height // Kích thước vẽ trên canvas
+    );
 
     // Chuyển canvas thành Base64 (JPEG, chất lượng 0.9)
     const base64Data = canvas.toDataURL('image/jpeg', 0.9);
@@ -772,6 +787,7 @@ function checkCameraAccess() {
     img.src = base64Data; // Hiển thị ảnh chụp
     img.style.display = 'block';
 });
+
 
 });
 
