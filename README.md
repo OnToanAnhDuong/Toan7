@@ -747,15 +747,15 @@ function checkCameraAccess() {
             .catch(error => console.error('Lỗi khi kiểm tra thiết bị camera:', error));
     }
 
-   captureButton.addEventListener('click', () => {
-    if (!video.videoWidth || !video.videoHeight) {
-        alert('Camera chưa sẵn sàng. Vui lòng đợi.');
-        return;
-    }
+  const maxWidth = 400px; // Kích thước chiều rộng tối đa
+    const maxHeight = 600px;
+    const scaleFactor = video.videoWidth > maxWidth ? maxWidth / video.videoWidth : 1;
 
-    const maxWidth = 420px; // Kích thước chiều rộng tối đa
-    const maxHeight = 620px;
-   // Vẽ khung hình từ video lên canvas
+    // Cập nhật kích thước canvas để giới hạn chiều rộng
+    canvas.width = video.videoWidth * scaleFactor;
+    canvas.height = video.videoHeight * scaleFactor;
+
+    // Vẽ khung hình từ video lên canvas
     const context = canvas.getContext('2d');
     context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
@@ -767,7 +767,6 @@ function checkCameraAccess() {
     img.src = base64Data; // Hiển thị ảnh chụp
     img.style.display = 'block';
 });
-
 
 });
 
