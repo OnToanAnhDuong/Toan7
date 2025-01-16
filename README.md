@@ -107,20 +107,27 @@
 }
 
 #cameraStream {
-    width: 100%;
-    max-width: 400px;
+    width: 100%; /* Chiếm toàn bộ chiều rộng container */
+    max-width: 400px; /* Đặt giới hạn chiều rộng tối đa */
+    height: calc(400px * 1.5); /* Chiều cao được tính theo tỷ lệ 1.5:1 */
+    object-fit: cover; /* Đảm bảo video lấp đầy khung mà không méo hình */
     border: 1px solid #ddd;
     border-radius: 5px;
+}
+
+
+#cameraContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
 }
 
 #captureButton {
     margin-top: 10px;
     padding: 10px 20px;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
+    font-size: 14px; /* Kích thước chữ vừa phải */
 }
 
 #captureButton:hover {
@@ -747,45 +754,41 @@ function checkCameraAccess() {
     }
 
   captureButton.addEventListener('click', () => {
-    if (!video.videoWidth || !video.videoHeight) {
-        alert('Camera chưa sẵn sàng. Vui lòng đợi.');
-        return;
-    }
-
-    const targetWidth = 600; // Chiều rộng mong muốn (có thể thay đổi)
-    const targetHeight = targetWidth * 1.5; // Chiều cao theo tỷ lệ 1,5
-
-    const scaleFactor = Math.min(
-        targetWidth / video.videoWidth,
-        targetHeight / video.videoHeight
-    );
-
-    // Tính kích thước canvas với tỷ lệ mục tiêu
-    canvas.width = targetWidth;
-    canvas.height = targetHeight;
-
     const context = canvas.getContext('2d');
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
 
-    // Tính toán để căn giữa nội dung
-    const offsetX = (video.videoWidth - targetWidth / scaleFactor) / 2;
-    const offsetY = (video.videoHeight - targetHeight / scaleFactor) / 2;
+    // Đảm bảo canvas sử dụng đúng tỷ lệ của video
+    const canvasWidth = 400; // Kích thước thu nhỏ hiển thị (giới hạn chiều rộng)
+    const canvasHeight = canvasWidth * 1.5; // Tỷ lệ 1.5:1
 
-    // Vẽ ảnh từ video lên canvas, cắt theo tỷ lệ
+    // Đặt kích thước canvas
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+
+    // Tính toán tỷ lệ cắt để đảm bảo ảnh không bị méo
+    const aspectRatio = videoWidth / videoHeight;
+    const targetWidth = aspectRatio > 1.5 ? videoHeight * 1.5 : videoWidth;
+    const targetHeight = aspectRatio > 1.5 ? videoHeight : videoWidth / 1.5;
+
+    // Vẽ ảnh từ video lên canvas
     context.drawImage(
         video,
-        offsetX, offsetY, // Điểm bắt đầu cắt
-        targetWidth / scaleFactor, targetHeight / scaleFactor, // Kích thước cắt
-        0, 0, // Điểm bắt đầu vẽ trên canvas
-        canvas.width, canvas.height // Kích thước vẽ trên canvas
+        (videoWidth - targetWidth) / 2, // Bắt đầu x (cắt ngang nếu cần)
+        (videoHeight - targetHeight) / 2, // Bắt đầu y (cắt dọc nếu cần)
+        targetWidth, // Chiều rộng được cắt
+        targetHeight, // Chiều cao được cắt
+        0, // Vẽ tại x
+        0, // Vẽ tại y
+        canvasWidth, // Chiều rộng đích
+        canvasHeight // Chiều cao đích
     );
 
-    // Chuyển canvas thành Base64 (JPEG, chất lượng 0.9)
-    const base64Data = canvas.toDataURL('image/jpeg', 0.9);
-    base64Image = base64Data.split(',')[1]; // Loại bỏ tiền tố "data:image/jpeg;base64,"
-
-    console.log('Base64 Image:', base64Image.substring(0, 100), '...'); // Log 100 ký tự đầu để kiểm tra
-    img.src = base64Data; // Hiển thị ảnh chụp
+    // Chuyển đổi ảnh từ canvas sang định dạng base64
+    base64Image = canvas.toDataURL('image/png');
+    img.src = base64Image;
     img.style.display = 'block';
+    console.log('Ảnh chụp (Base64):', base64Image);
 });
 
 
