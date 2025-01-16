@@ -636,10 +636,11 @@ function checkCameraAccess() {
         return;
     }
 
-    if (!base64Image && !studentFileInput?.files?.length) {
-        alert('Vui lòng chọn hoặc chụp ảnh bài làm của học sinh.');
-        return;
-    }
+  if (!base64Image && !studentFileInput?.files?.length) {
+    alert('Vui lòng chọn hoặc chụp ảnh bài làm của học sinh.');
+    return;
+}
+
 
     // Ưu tiên ảnh từ camera, nếu không có thì sử dụng ảnh tải lên từ file
     const imageToProcess = base64Image || (studentFileInput.files.length > 0 ? await getBase64(studentFileInput.files[0]) : null);
