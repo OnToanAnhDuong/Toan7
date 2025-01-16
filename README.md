@@ -752,7 +752,10 @@ function checkCameraAccess() {
         alert('Camera chưa sẵn sàng. Vui lòng đợi.');
         return;
     }
-      const scaleFactor = video.videoWidth > maxWidth ? maxWidth / video.videoWidth : 1;
+
+    const maxWidth = 300; // Kích thước chiều rộng tối đa
+    const maxHeight = 450;
+    const scaleFactor = video.videoWidth > maxWidth ? maxWidth / video.videoWidth : 1;
 
     // Cập nhật kích thước canvas để giới hạn chiều rộng
     canvas.width = video.videoWidth * scaleFactor;
@@ -770,6 +773,7 @@ function checkCameraAccess() {
     img.src = base64Data; // Hiển thị ảnh chụp
     img.style.display = 'block';
 });
+
 
 });
 
