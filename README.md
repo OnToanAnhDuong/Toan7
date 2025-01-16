@@ -714,8 +714,7 @@ function checkCameraAccess() {
     const captureButton = document.getElementById('captureButton');
     const canvas = document.getElementById('photoCanvas');
     const img = document.getElementById('capturedImage');
-    let base64Image = '';
-
+  
     checkCameraAccess(); // Kiểm tra thiết bị
     startCamera(); // Bắt đầu camera
 
@@ -747,15 +746,16 @@ function checkCameraAccess() {
     }
 
     captureButton.addEventListener('click', () => {
-        const context = canvas.getContext('2d');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        base64Image = canvas.toDataURL('image/png');
-        img.src = base64Image;
-        img.style.display = 'block';
-        console.log('Ảnh chụp (Base64):', base64Image);
-    });
+    const context = canvas.getContext('2d');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    base64Image = canvas.toDataURL('image/png');
+    img.src = base64Image;
+    img.style.display = 'block';
+    console.log('Ảnh chụp (Base64):', base64Image);
+});
+
 });
 
 
