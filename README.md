@@ -106,10 +106,10 @@
 }
 
 #cameraStream {
-    width: 100%;
-    height: 100%;
-    max-width: 300px;
-    max-height: 450px;
+    width: 100%; /* Chiếm toàn bộ chiều rộng container */
+    max-width: 400px; /* Đặt giới hạn chiều rộng tối đa */
+    height: calc(400px * 1.5); /* Chiều cao được tính theo tỷ lệ 1.5:1 */
+    object-fit: cover; /* Đảm bảo video lấp đầy khung mà không méo hình */
     border: 1px solid #ddd;
     border-radius: 5px;
 }
