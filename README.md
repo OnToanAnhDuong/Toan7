@@ -710,24 +710,7 @@ function checkCameraAccess() {
         alert('Vui lòng nhập số thứ tự bài cần chọn.');
     	}
 	});
-	captureButton.addEventListener('click', () => {
-    const context = canvas.getContext('2d');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-
-    // Vẽ khung hình từ camera vào canvas
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-    // Chuyển đổi ảnh sang Base64 định dạng JPEG, với nén 90%
-    base64Image = canvas.toDataURL('image/jpeg', 0.9);
-
-    // Hiển thị ảnh chụp trên giao diện
-    img.src = base64Image;
-    img.style.display = 'block';
-
-    // Log Base64 của ảnh (chỉ log một phần để kiểm tra)
-    console.log('Ảnh chụp (Base64):', base64Image.substring(0, 100), '...');
-});
+	
 
 });
 
