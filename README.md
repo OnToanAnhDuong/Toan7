@@ -752,7 +752,8 @@ function checkCameraAccess() {
         return;
     }
 
-    const maxWidth = 400; // Kích thước chiều rộng tối đa
+    const maxWidth = 300; // Kích thước chiều rộng tối đa
+    const maxHeight = 800;
     const scaleFactor = video.videoWidth > maxWidth ? maxWidth / video.videoWidth : 1;
 
     // Cập nhật kích thước canvas để giới hạn chiều rộng
