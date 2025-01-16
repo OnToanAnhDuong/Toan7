@@ -752,12 +752,22 @@ function checkCameraAccess() {
         return;
     }
 
-    const maxWidth = 300; // Kích thước chiều rộng tối đa
-    const scaleFactor = video.videoWidth > maxWidth ? maxWidth / video.videoWidth : 1;
+   const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
 
-    // Cập nhật kích thước canvas để giới hạn chiều rộng
-    canvas.width = video.videoWidth * scaleFactor;
-    canvas.height = video.videoHeight * scaleFactor;
+    // Đảm bảo canvas sử dụng đúng tỷ lệ của video
+    const canvasWidth = 400; // Kích thước thu nhỏ hiển thị (giới hạn chiều rộng)
+    const canvasHeight = canvasWidth * 1.5; // Tỷ lệ 1.5:1
+
+    // Đặt kích thước canvas
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+
+    // Tính toán tỷ lệ cắt để đảm bảo ảnh không bị méo
+    const aspectRatio = videoWidth / videoHeight;
+    const targetWidth = aspectRatio > 1.5 ? videoHeight * 1.5 : videoWidth;
+    const targetHeight = aspectRatio > 1.5 ? videoHeight : videoWidth / 1.5;
+
 
     // Vẽ khung hình từ video lên canvas
     const context = canvas.getContext('2d');
