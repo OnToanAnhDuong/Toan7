@@ -104,7 +104,9 @@
     margin-top: 20px;
     text-align: center;
 }
-
+#mainContent {
+    display: none;
+}
 #cameraStream {
     width: 100%; /* Chiều rộng đầy đủ trong container cha */
     height: auto; /* Tự động điều chỉnh chiều cao dựa trên tỷ lệ video */
