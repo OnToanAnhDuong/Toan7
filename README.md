@@ -139,11 +139,11 @@
     border-radius: 5px;
     display: block;
 }
-  #cameraAndImageContainer {
-    display: flex; /* Sắp xếp các phần tử ngang hàng */
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px; /* Khoảng cách giữa video và ảnh */
+ #cameraAndImageContainer {
+    display: flex;
+    justify-content: space-between; /* Khoảng cách giữa video và ảnh */
+    align-items: flex-start; /* Căn lề trên của video và ảnh */
+    gap: 20px; /* Khoảng cách giữa các phần tử */
     margin-top: 20px;
 }
 
