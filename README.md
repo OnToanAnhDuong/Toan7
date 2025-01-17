@@ -172,10 +172,13 @@
         <input type="file" id="studentImage" accept="image/*">
 	<label for="cameraStream">Hoặc chụp ảnh từ camera:</label>
 <div id="cameraContainer">
-    <video id="cameraStream" autoplay playsinline></video>
-    <button id="captureButton">Chụp ảnh</button>
-    <canvas id="photoCanvas" style="display: none;"></canvas>
-    <img id="capturedImage" alt="Ảnh đã chụp" style="margin-top: 10px; max-width: 100%; display: none;">
+    <div id="videoContainer">
+        <video id="cameraStream" autoplay playsinline></video>
+        <button id="captureButton">Chụp ảnh</button>
+    </div>
+    <div id="imageContainer">
+        <img id="capturedImage" alt="Ảnh đã chụp" style="display: none;">
+    </div>
 </div>
 
         
