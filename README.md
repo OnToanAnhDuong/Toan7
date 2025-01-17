@@ -153,6 +153,94 @@
     align-items: center;
     max-width: 45%;
 } 
+#buttonContainer {
+    display: flex; /* Sắp xếp các nút trên một hàng ngang */
+    justify-content: center; /* Căn giữa các nút */
+    gap: 20px; /* Khoảng cách giữa các nút */
+    margin-bottom: 20px; /* Khoảng cách bên dưới */
+}
+
+#buttonContainer button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#buttonContainer button:hover {
+    background-color: #0056b3;
+}
+/* Hàng trên cùng: Khung nhập số và các nút */
+#topControls {
+    display: flex; /* Sắp xếp các phần tử trên một hàng ngang */
+    justify-content: center; /* Căn giữa các phần tử */
+    gap: 20px; /* Khoảng cách giữa các phần tử */
+    margin-bottom: 20px; /* Khoảng cách dưới hàng */
+}
+
+#topControls input[type="number"] {
+    width: 200px; /* Đặt chiều rộng cho khung nhập số */
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#topControls button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#topControls button:hover {
+    background-color: #0056b3;
+}
+
+/* Hàng thứ hai: Phần đề bài */
+#problemContainer {
+    margin-top: 20px;
+    width: 100%; /* Chiếm toàn bộ chiều ngang */
+}
+
+#problemText {
+    font-size: 18px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    min-height: 200px; /* Đặt chiều cao tối thiểu */
+    white-space: pre-wrap; /* Giữ định dạng dòng của đề bài */
+}
+
+/* Hàng thứ ba: Các nút chức năng */
+#bottomControls {
+    display: flex; /* Sắp xếp các nút trên một hàng ngang */
+    justify-content: center; /* Căn giữa các nút */
+    gap: 20px; /* Khoảng cách giữa các nút */
+    margin-top: 20px; /* Khoảng cách trên hàng */
+}
+
+#bottomControls button {
+    padding: 10px 20px;
+    background-color: #5cb85c;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#bottomControls button:hover {
+    background-color: #4cae4c;
+}
+
 </style>
 
     <!-- Thêm MathJax -->
@@ -181,16 +269,25 @@
 
     <div id="mainContent" style="display: none;">
         
-	<div id="selectProblemContainer">
-    	<label for="problemIndexInput">Nhập số thứ tự bài cần chọn:</label>
-   	 <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)">
-   	 <button id="selectProblemBtn">Hiển thị bài tập</button>
-	</div>
-        
-	<div id="problemContainer">
-            <button id="randomProblemBtn">Lấy đề bài ngẫu nhiên</button>
-            <label for="problemText">Đề bài:</label>
-            <div id="problemText"></div>
+	<!-- Hàng trên cùng: Khung nhập số và các nút liên quan -->
+<div id="topControls">
+    <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)" />
+    <button id="selectProblemBtn">Hiển thị bài tập</button>
+    <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
+</div>
+
+<!-- Hàng thứ hai: Đề bài -->
+<div id="problemContainer">
+    <label for="problemText">Đề bài:</label>
+    <div id="problemText"></div>
+</div>
+
+<!-- Hàng thứ ba: Các nút chức năng -->
+<div id="bottomControls">
+    <button id="submitBtn">Chấm Bài</button>
+    <button id="hintBtn">Gợi ý</button>
+</div>
+
         </div>
         
         <label for="studentImage">Ảnh bài làm của học sinh:</label>
