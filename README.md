@@ -720,30 +720,21 @@ function checkCameraAccess() {
     checkCameraAccess(); // Kiểm tra thiết bị
     startCamera(); // Bắt đầu camera
 
-  async function startCamera() {
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-            video: {
-                width: { ideal: 400 }, // Độ rộng mong muốn
-                height: { ideal: 600 }, // Chiều cao mong muốn
-                aspectRatio: 1.5, // Tỷ lệ khung hình
-                facingMode: "environment" // Ưu tiên camera sau
-            },
-            audio: false // Tắt âm thanh
-        });
-        video.srcObject = stream;
-    } catch (err) {
-        console.error('Lỗi khi mở camera:', err);
-        if (err.name === 'NotAllowedError') {
-            alert('Bạn chưa cấp quyền truy cập camera.');
-        } else if (err.name === 'NotFoundError') {
-            alert('Không tìm thấy thiết bị camera.');
-        } else {
-            alert('Lỗi không xác định. Vui lòng thử lại.');
+    async function startCamera() {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+        } catch (err) {
+            console.error('Lỗi khi mở camera:', err);
+            if (err.name === 'NotAllowedError') {
+                alert('Bạn chưa cấp quyền truy cập camera.');
+            } else if (err.name === 'NotFoundError') {
+                alert('Không tìm thấy thiết bị camera.');
+            } else {
+                alert('Lỗi không xác định. Vui lòng thử lại.');
+            }
         }
     }
-}
-
 
     function checkCameraAccess() {
         navigator.mediaDevices.enumerateDevices()
@@ -761,16 +752,40 @@ captureButton.addEventListener('click', () => {
         return;
     }
 
-    // Tăng kích thước canvas để phù hợp với độ phân giải cao hơn
-    canvas.width = 800; // Độ rộng mong muốn
-    canvas.height = 1200; // Độ cao mong muốn (tỷ lệ 1.5:1)
+    // Tính toán tỷ lệ khung hình mong muốn (1.5:1)
+    const desiredAspectRatio = 1.5; // Chiều cao gấp 1.5 lần chiều rộng
+    const videoWidth = video.clientWidth;
+    const videoHeight = videoWidth * desiredAspectRatio; // Tính chiều cao theo tỷ lệ 1.5:1
 
+    // Đặt kích thước canvas với tỷ lệ mong muốn
+    canvas.width = videoWidth;
+    canvas.height = videoHeight;
+
+    // Tính toán phần video cần cắt để khớp tỷ lệ
+    const actualAspectRatio = video.videoHeight / video.videoWidth;
+    let sx = 0, sy = 0, sWidth = video.videoWidth, sHeight = video.videoHeight;
+
+    if (actualAspectRatio > desiredAspectRatio) {
+        // Video quá cao, cắt bớt chiều cao
+        sHeight = video.videoWidth * desiredAspectRatio;
+        sy = (video.videoHeight - sHeight) / 2; // Cắt đều hai bên
+    } else if (actualAspectRatio < desiredAspectRatio) {
+        // Video quá rộng, cắt bớt chiều rộng
+        sWidth = video.videoHeight / desiredAspectRatio;
+        sx = (video.videoWidth - sWidth) / 2; // Cắt đều hai bên
+    }
+
+    // Vẽ nội dung video lên canvas với kích thước và tỷ lệ đã tính toán
     const context = canvas.getContext('2d');
-    context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, canvas.width, canvas.height);
+    context.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
 
-    const base64Data = canvas.toDataURL('image/jpeg', 0.9); // Tăng chất lượng JPEG (0.9 là cao)
-    base64Image = base64Data.split(',')[1];
+    // Chuyển đổi canvas thành Base64 (JPEG, chất lượng 0.9)
+    const base64Data = canvas.toDataURL('image/jpeg', 0.9);
+    base64Image = base64Data.split(',')[1]; // Loại bỏ tiền tố "data:image/jpeg;base64,"
 
+    console.log('Base64 Image:', base64Image.substring(0, 100), '...'); // Log 100 ký tự đầu để kiểm tra
+
+    // Hiển thị ảnh chụp
     img.src = base64Data;
     img.style.display = 'block';
 });
