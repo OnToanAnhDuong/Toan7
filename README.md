@@ -169,6 +169,11 @@
         </div>
         <button id="submitBtn">Chấm Bài</button>
         <button id="hintBtn">Gợi ý</button>
+	</div>
+
+       
+        <div id="result"></div>
+</div>
         <label for="studentImage">Ảnh bài làm của học sinh:</label>
         <input type="file" id="studentImage" accept="image/*">
 	<label for="cameraStream">Hoặc chụp ảnh từ camera:</label>
@@ -177,11 +182,7 @@
     <button id="captureButton">Chụp ảnh</button>
     <canvas id="photoCanvas" style="display: none;"></canvas>
     <img id="capturedImage" alt="Ảnh đã chụp" style="margin-top: 10px; max-width: 100%; display: none;">
-</div>
 
-       
-        <div id="result"></div>
-    </div>
 
     <script>
         const SHEET_ID = '175acnaYklfdCc_UJ7B3LJgNaUJpfrIENxn6LN76QADM';
