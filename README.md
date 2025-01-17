@@ -167,7 +167,8 @@
             <label for="problemText">Đề bài:</label>
             <div id="problemText"></div>
         </div>
-        
+        <button id="submitBtn">Chấm Bài</button>
+        <button id="hintBtn">Gợi ý</button>
         <label for="studentImage">Ảnh bài làm của học sinh:</label>
         <input type="file" id="studentImage" accept="image/*">
 	<label for="cameraStream">Hoặc chụp ảnh từ camera:</label>
@@ -178,10 +179,7 @@
     <img id="capturedImage" alt="Ảnh đã chụp" style="margin-top: 10px; max-width: 100%; display: none;">
 </div>
 
-        
-        <button id="submitBtn">Chấm Bài</button>
-        <button id="hintBtn">Gợi ý</button>
-
+       
         <div id="result"></div>
     </div>
 
