@@ -197,18 +197,19 @@
         <input type="file" id="studentImage" accept="image/*">
 	<label for="cameraStream">Hoặc chụp ảnh từ camera:</label>
 <div id="cameraAndImageContainer">
-    <!-- Khung chứa video -->
+    <!-- Video container -->
     <div id="videoContainer">
         <video id="cameraStream" autoplay playsinline></video>
-        <button id="captureButton">Chụp ảnh</button>
+        <button id="captureButton" style="margin-top: 10px;">Chụp ảnh</button>
     </div>
 
-    <!-- Khung chứa ảnh chụp -->
+    <!-- Image container -->
     <div id="imageContainer">
         <canvas id="photoCanvas" style="display: none;"></canvas>
         <img id="capturedImage" alt="Ảnh đã chụp" style="max-width: 100%; display: none;">
     </div>
 </div>
+
 
 
         
