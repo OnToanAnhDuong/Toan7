@@ -106,9 +106,7 @@
 }
 
 #cameraStream {
-     max-width: 400px; /* Đặt giới hạn chiều rộng tối đa */
-    height: calc(400px * 1.5); /* Chiều cao được tính theo tỷ lệ 1.5:1 */
-    object-fit: cover; /* Đảm bảo video lấp đầy khung mà không méo hình */
+    max-width: 100%;
     border: 1px solid #ddd;
     border-radius: 5px;
 }
@@ -126,8 +124,28 @@
 #captureButton:hover {
     background-color: #0056b3;
 }
+#capturedImage {
+    max-width: 100%;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: block;
+}
+  #cameraAndImageContainer {
+    display: flex; /* Sắp xếp các phần tử ngang hàng */
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px; /* Khoảng cách giữa video và ảnh */
+    margin-top: 20px;
+}
 
-    </style>
+#videoContainer, #imageContainer {
+    display: flex;
+    flex-direction: column; /* Nội dung bên trong sắp xếp dọc */
+    align-items: center;
+    max-width: 45%;
+} 
+</style>
 
     <!-- Thêm MathJax -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -143,50 +161,6 @@
     </script>
     <script id="MathJax-script" async
         src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-	#cameraAndImageContainer {
-    display: flex; /* Đặt container hiển thị các phần tử con theo hàng ngang */
-    justify-content: space-between; /* Tạo khoảng cách giữa các phần tử */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    gap: 20px; /* Khoảng cách giữa video và ảnh chụp */
-    margin-top: 20px;
-}
-
-#videoContainer, #imageContainer {
-    display: flex;
-    flex-direction: column; /* Sắp xếp các phần tử trong container theo chiều dọc */
-    align-items: center; /* Căn giữa nội dung theo chiều ngang */
-    max-width: 45%; /* Giới hạn kích thước container */
-}
-
-#cameraStream {
-    max-width: 100%; /* Đảm bảo video không vượt quá chiều rộng container */
-    height: auto; /* Tự động điều chỉnh chiều cao theo tỷ lệ */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-#captureButton {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-#captureButton:hover {
-    background-color: #0056b3;
-}
-
-#capturedImage {
-    max-width: 100%; /* Đảm bảo ảnh không vượt quá chiều rộng container */
-    margin-top: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    display: block; /* Hiển thị ảnh sau khi được chụp */
-}
-
     </script>
 </head>
 <body>
@@ -215,16 +189,21 @@
         <input type="file" id="studentImage" accept="image/*">
 	<label for="cameraStream">Hoặc chụp ảnh từ camera:</label>
 <div id="cameraAndImageContainer">
+    <!-- Khung chứa video -->
     <div id="videoContainer">
         <video id="cameraStream" autoplay playsinline></video>
         <button id="captureButton">Chụp ảnh</button>
     </div>
+
+    <!-- Khung chứa ảnh chụp -->
     <div id="imageContainer">
         <canvas id="photoCanvas" style="display: none;"></canvas>
         <img id="capturedImage" alt="Ảnh đã chụp" style="max-width: 100%; display: none;">
     </div>
 </div>
-       
+
+
+        
         <button id="submitBtn">Chấm Bài</button>
         <button id="hintBtn">Gợi ý</button>
 
@@ -834,10 +813,11 @@ captureButton.addEventListener('click', () => {
     // Hiển thị ảnh chụp
     img.src = base64Data;
     img.style.display = 'block';
-     const imageContainer = document.getElementById('imageContainer');
-    if (!imageContainer.contains(img)) {
-        imageContainer.appendChild(img); // Đảm bảo ảnh được thêm vào đúng container
-    }
+    const imageContainer = document.getElementById('imageContainer');
+if (!imageContainer.contains(img)) {
+    imageContainer.appendChild(img); // Đảm bảo ảnh nằm trong `#imageContainer`
+}
+
 });
 
 });
