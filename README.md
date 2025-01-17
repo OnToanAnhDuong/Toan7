@@ -752,36 +752,26 @@ captureButton.addEventListener('click', () => {
         return;
     }
 
-    // Tính kích thước canvas theo tỷ lệ 1.5:1
-    const canvasWidth = 400; // Đặt chiều rộng cố định
-    const canvasHeight = canvasWidth * 1.5; // Chiều cao gấp 1.5 lần chiều rộng
+    // Lấy kích thước hiển thị của video
+    const videoWidth = video.clientWidth;
+    const videoHeight = video.clientHeight;
 
-    // Cập nhật kích thước canvas
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
+    // Đặt kích thước canvas bằng với kích thước hiển thị của video
+    canvas.width = videoWidth;
+    canvas.height = videoHeight;
 
-    // Vẽ ảnh từ video vào canvas, căn chỉnh để giữ đúng tỷ lệ 1.5:1
+    // Vẽ toàn bộ nội dung video vào canvas
     const context = canvas.getContext('2d');
-    const videoAspectRatio = video.videoWidth / video.videoHeight;
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    if (videoAspectRatio > 1.5) {
-        // Video quá rộng so với tỷ lệ 1.5:1 -> Cắt bớt hai bên
-        const cropWidth = video.videoHeight * 1.5;
-        const cropX = (video.videoWidth - cropWidth) / 2;
-        context.drawImage(video, cropX, 0, cropWidth, video.videoHeight, 0, 0, canvasWidth, canvasHeight);
-    } else {
-        // Video quá cao so với tỷ lệ 1.5:1 -> Cắt bớt trên và dưới
-        const cropHeight = video.videoWidth / 1.5;
-        const cropY = (video.videoHeight - cropHeight) / 2;
-        context.drawImage(video, 0, cropY, video.videoWidth, cropHeight, 0, 0, canvasWidth, canvasHeight);
-    }
-
-    // Chuyển đổi canvas thành Base64 và hiển thị ảnh
-    const base64Data = canvas.toDataURL('image/jpeg', 0.9); // Chất lượng 90%
+    // Chuyển đổi canvas thành Base64 (JPEG, chất lượng 0.9)
+    const base64Data = canvas.toDataURL('image/jpeg', 0.9);
     base64Image = base64Data.split(',')[1]; // Loại bỏ tiền tố "data:image/jpeg;base64,"
+
     console.log('Base64 Image:', base64Image.substring(0, 100), '...'); // Log 100 ký tự đầu để kiểm tra
 
-    img.src = base64Data; // Hiển thị ảnh chụp
+    // Hiển thị ảnh chụp
+    img.src = base64Data;
     img.style.display = 'block';
 });
 
