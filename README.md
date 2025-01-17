@@ -777,8 +777,10 @@ captureButton.addEventListener('click', () => {
 
     // Vẽ nội dung video lên canvas với kích thước và tỷ lệ đã tính toán
     const context = canvas.getContext('2d');
+    context.filter = 'brightness(1.2) contrast(1.1)'; // Tăng sáng 20% và độ tương phản 10%
+ 
     context.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
-
+	
     // Chuyển đổi canvas thành Base64 (JPEG, chất lượng 0.9)
     const base64Data = canvas.toDataURL('image/jpeg', 0.9);
     base64Image = base64Data.split(',')[1]; // Loại bỏ tiền tố "data:image/jpeg;base64,"
