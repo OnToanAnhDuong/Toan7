@@ -282,11 +282,7 @@
         <img id="capturedImage" alt="Ảnh đã chụp" style="max-width: 100%; display: none;">
     </div>
 </div>
-
-       
-        <button id="submitBtn">Chấm Bài</button>
-        <button id="hintBtn">Gợi ý</button>
-
+      
         <div id="result"></div>
     </div>
 
