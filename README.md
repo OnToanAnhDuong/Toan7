@@ -127,37 +127,6 @@
 #captureButton:hover {
     background-color: #0056b3;
 }
-/* Định dạng hàng ngang chứa video và ảnh */
-.row {
-    display: flex; /* Chuyển phần tử con thành hàng ngang */
-    justify-content: space-between; /* Cách đều giữa các cột */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    gap: 20px; /* Khoảng cách giữa video và ảnh */
-}
-
-/* Định dạng cột chứa video và ảnh */
-.column {
-    flex: 1; /* Chia đều không gian cho mỗi cột */
-    text-align: center; /* Căn giữa nội dung bên trong */
-}
-
-/* Định dạng video */
-#cameraStream {
-    width: 100%; /* Chiều rộng đầy đủ trong cột */
-    max-width: 300px; /* Giới hạn chiều rộng tối đa */
-    height: auto; /* Tự động giữ tỷ lệ */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-/* Định dạng ảnh đã chụp */
-#capturedImage {
-    width: 100%; /* Chiều rộng đầy đủ trong cột */
-    max-width: 300px; /* Giới hạn chiều rộng tối đa */
-    height: auto; /* Tự động giữ tỷ lệ */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
 
     </style>
 
@@ -203,17 +172,11 @@
         <input type="file" id="studentImage" accept="image/*">
 	<label for="cameraStream">Hoặc chụp ảnh từ camera:</label>
 <div id="cameraContainer">
-    <div class="row">
-        <div class="column">
-            <video id="cameraStream" autoplay playsinline></video>
-        </div>
-        <div class="column">
-            <img id="capturedImage" alt="Ảnh đã chụp" style="display: none;">
-        </div>
-    </div>
+    <video id="cameraStream" autoplay playsinline></video>
     <button id="captureButton">Chụp ảnh</button>
+    <canvas id="photoCanvas" style="display: none;"></canvas>
+    <img id="capturedImage" alt="Ảnh đã chụp" style="margin-top: 10px; max-width: 100%; display: none;">
 </div>
-
 
         
         <button id="submitBtn">Chấm Bài</button>
@@ -814,10 +777,8 @@ captureButton.addEventListener('click', () => {
 
     // Vẽ nội dung video lên canvas với kích thước và tỷ lệ đã tính toán
     const context = canvas.getContext('2d');
-    context.filter = 'brightness(1.2) contrast(1.1)'; // Tăng sáng 20% và độ tương phản 10%
- 
     context.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
-	
+
     // Chuyển đổi canvas thành Base64 (JPEG, chất lượng 0.9)
     const base64Data = canvas.toDataURL('image/jpeg', 0.9);
     base64Image = base64Data.split(',')[1]; // Loại bỏ tiền tố "data:image/jpeg;base64,"
