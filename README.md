@@ -159,14 +159,17 @@
 	<div id="selectProblemContainer">
     	<label for="problemIndexInput">Nhập số thứ tự bài cần chọn:</label>
    	 <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)">
-   	 <button id="selectProblemBtn">Hiển thị bài tập</button>
-	</div>
-        
-	<div id="problemContainer">
+   	 
+<div>
+<button id="selectProblemBtn">Hiển thị bài tập</button>
+	</div>	
+ <div id="problemContainer">
             <button id="randomProblemBtn">Lấy đề bài ngẫu nhiên</button>
             <label for="problemText">Đề bài:</label>
             <div id="problemText"></div>
         </div>
+</div>
+	
         
         <label for="studentImage">Ảnh bài làm của học sinh:</label>
         <input type="file" id="studentImage" accept="image/*">
