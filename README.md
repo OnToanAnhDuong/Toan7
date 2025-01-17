@@ -724,8 +724,8 @@ function checkCameraAccess() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
             video: {
-                width: { ideal: 800 }, // Độ rộng mong muốn
-                height: { ideal: 1200 }, // Chiều cao mong muốn
+                width: { ideal: 400 }, // Độ rộng mong muốn
+                height: { ideal: 600 }, // Chiều cao mong muốn
                 aspectRatio: 1.5, // Tỷ lệ khung hình
                 facingMode: "environment" // Ưu tiên camera sau
             },
