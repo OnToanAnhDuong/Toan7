@@ -106,13 +106,17 @@
 }
 
 #cameraStream {
-    width: auto; /* Đảm bảo video không bị ép theo chiều rộng */
-    height: calc(100% * 1.5); /* Đặt chiều cao theo tỷ lệ 1.5 */
-    max-height: 800px; /* Giới hạn chiều cao tối đa nếu cần */
-    object-fit: cover; /* Đảm bảo video không bị méo */
+    width: 50%; /* Chiều rộng đầy đủ trong container cha */
+    height: auto; /* Tự động điều chỉnh chiều cao dựa trên tỷ lệ video */
+    aspect-ratio: 2 / 3; /* Tỷ lệ 1.5:1 (Chiều rộng : Chiều cao = 2:3) */
+    max-height: 800px; /* (Tùy chọn) Giới hạn chiều cao tối đa */
+    object-fit: cover; /* Đảm bảo video lấp đầy container mà không méo */
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+
+
+
 
 
 #captureButton {
