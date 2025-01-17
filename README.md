@@ -264,7 +264,7 @@
         <button id="submitBtn">Chấm Bài</button>
         <button id="hintBtn">Gợi ý</button>
     </div>
-</div>
+
          
         <label for="studentImage">Ảnh bài làm của học sinh:</label>
         <input type="file" id="studentImage" accept="image/*">
@@ -283,9 +283,7 @@
     </div>
 </div>
 
-
-
-        
+       
         <button id="submitBtn">Chấm Bài</button>
         <button id="hintBtn">Gợi ý</button>
 
