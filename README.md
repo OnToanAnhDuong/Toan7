@@ -100,9 +100,12 @@
             background-color: rgba(0,0,0,0.5);
             z-index: 999;
         }
-	#cameraContainer {
-    margin-top: 20px;
-    text-align: center;
+#cameraContainer {
+    display: flex; /* Sắp xếp các phần tử theo chiều ngang */
+    justify-content: center; /* Căn giữa nội dung trong container */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    gap: 20px; /* Khoảng cách giữa video và ảnh */
+    margin-top: 20px; /* Khoảng cách từ nội dung phía trên */
 }
 
 #cameraStream {
@@ -127,7 +130,22 @@
 #captureButton:hover {
     background-color: #0056b3;
 }
-
+#cameraStream, #capturedImage {
+    width: 320px; /* Chiều rộng hợp lý hơn để đảm bảo hiển thị đầy đủ */
+    height: 240px; /* Chiều cao được điều chỉnh theo tỷ lệ 4:3 */
+    object-fit: cover; /* Đảm bảo nội dung lấp đầy khung hình mà không bị méo */
+    border: 1px solid #ddd; /* Đường viền nhẹ nhàng */
+    border-radius: 5px; /* Bo tròn góc cho giao diện mềm mại */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng đổ bóng nhẹ */
+}
+#cameraStream, #capturedImage {
+    width: 320px; /* Chiều rộng hợp lý hơn để đảm bảo hiển thị đầy đủ */
+    height: 240px; /* Chiều cao được điều chỉnh theo tỷ lệ 4:3 */
+    object-fit: cover; /* Đảm bảo nội dung lấp đầy khung hình mà không bị méo */
+    border: 1px solid #ddd; /* Đường viền nhẹ nhàng */
+    border-radius: 5px; /* Bo tròn góc cho giao diện mềm mại */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng đổ bóng nhẹ */
+}
     </style>
 
     <!-- Thêm MathJax -->
@@ -172,10 +190,14 @@
         <input type="file" id="studentImage" accept="image/*">
 	<label for="cameraStream">Hoặc chụp ảnh từ camera:</label>
 <div id="cameraContainer">
+    <div id="cameraContainer">
+    <!-- Container video -->
     <div id="videoContainer">
         <video id="cameraStream" autoplay playsinline></video>
         <button id="captureButton">Chụp ảnh</button>
     </div>
+
+    <!-- Container ảnh chụp -->
     <div id="imageContainer">
         <img id="capturedImage" alt="Ảnh đã chụp" style="display: none;">
     </div>
