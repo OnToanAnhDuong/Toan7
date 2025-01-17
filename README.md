@@ -720,15 +720,16 @@ function checkCameraAccess() {
     checkCameraAccess(); // Kiểm tra thiết bị
     startCamera(); // Bắt đầu camera
 
-   async function startCamera() {
+  async function startCamera() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({
             video: {
-                width: { ideal: 800 }, // Tăng độ rộng mong muốn
-                height: { ideal: 1200 }, // Tăng độ cao mong muốn (tỷ lệ 1.5:1)
+                width: { ideal: 800 }, // Độ rộng mong muốn
+                height: { ideal: 1200 }, // Chiều cao mong muốn
+                aspectRatio: 1.5, // Tỷ lệ khung hình
                 facingMode: "environment" // Ưu tiên camera sau
             },
-            audio: false
+            audio: false // Tắt âm thanh
         });
         video.srcObject = stream;
     } catch (err) {
