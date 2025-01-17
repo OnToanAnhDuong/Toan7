@@ -752,17 +752,32 @@ captureButton.addEventListener('click', () => {
         return;
     }
 
-    // Lấy kích thước hiển thị của video
+    // Tính toán tỷ lệ khung hình mong muốn (1.5:1)
+    const desiredAspectRatio = 1.5; // Chiều cao gấp 1.5 lần chiều rộng
     const videoWidth = video.clientWidth;
-    const videoHeight = video.clientHeight;
+    const videoHeight = videoWidth * desiredAspectRatio; // Tính chiều cao theo tỷ lệ 1.5:1
 
-    // Đặt kích thước canvas bằng với kích thước hiển thị của video
+    // Đặt kích thước canvas với tỷ lệ mong muốn
     canvas.width = videoWidth;
     canvas.height = videoHeight;
 
-    // Vẽ toàn bộ nội dung video vào canvas
+    // Tính toán phần video cần cắt để khớp tỷ lệ
+    const actualAspectRatio = video.videoHeight / video.videoWidth;
+    let sx = 0, sy = 0, sWidth = video.videoWidth, sHeight = video.videoHeight;
+
+    if (actualAspectRatio > desiredAspectRatio) {
+        // Video quá cao, cắt bớt chiều cao
+        sHeight = video.videoWidth * desiredAspectRatio;
+        sy = (video.videoHeight - sHeight) / 2; // Cắt đều hai bên
+    } else if (actualAspectRatio < desiredAspectRatio) {
+        // Video quá rộng, cắt bớt chiều rộng
+        sWidth = video.videoHeight / desiredAspectRatio;
+        sx = (video.videoWidth - sWidth) / 2; // Cắt đều hai bên
+    }
+
+    // Vẽ nội dung video lên canvas với kích thước và tỷ lệ đã tính toán
     const context = canvas.getContext('2d');
-    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    context.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
 
     // Chuyển đổi canvas thành Base64 (JPEG, chất lượng 0.9)
     const base64Data = canvas.toDataURL('image/jpeg', 0.9);
