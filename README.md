@@ -1,7 +1,7 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Học sinh tự ôn luyện Toán - Bài tập ngẫu nhiên</title>
+    <title>ÔN LUYỆN TOÁN THCS - TRUNG TÂM ÁNH DƯƠNG</title>
     <style>
         body {
             font-family: Arial, sans-serif;
