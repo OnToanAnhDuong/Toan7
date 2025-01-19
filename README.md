@@ -876,10 +876,13 @@ captureButton.addEventListener('click', () => {
         sWidth = video.videoHeight / desiredAspectRatio;
         sx = (video.videoWidth - sWidth) / 2; // Cắt đều hai bên
     }
-
+	
     // Vẽ nội dung video lên canvas với kích thước và tỷ lệ đã tính toán
     const context = canvas.getContext('2d');
     context.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
+	  // Áp dụng bộ lọc tăng độ sáng
+    context.filter = 'brightness(1.5)'; // Tăng độ sáng lên 50%
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
     // Chuyển đổi canvas thành Base64 (JPEG, chất lượng 0.9)
     const base64Data = canvas.toDataURL('image/jpeg', 0.9);
