@@ -239,7 +239,7 @@
     </script>
 </head>
 <body>
-    <h1>Học sinh tự ôn luyện Toán - Bài tập ngẫu nhiên</h1>
+    <h1>ÔN LYỆN TOÁN LỚP 7  - TRUNG TÂM ÁNH DƯƠNG</h1>
     
     <div id="loginContainer">
         <input type="text" id="studentId" placeholder="Nhập mã học sinh">
