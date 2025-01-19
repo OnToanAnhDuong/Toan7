@@ -220,6 +220,13 @@
 #bottomControls button:hover {
     background-color: #4cae4c;
 }
+button.delete {
+    background-color: #dc3545;
+    color: white;
+}
+button.delete:hover {
+    background-color: #c82333;
+}
 </style>
 
     <!-- Thêm MathJax -->
@@ -263,6 +270,7 @@
     <div id="bottomControls">
         <button id="submitBtn">Chấm Bài</button>
         <button id="hintBtn">Gợi ý</button>
+	<button id="deleteResultBtn">Xóa bài giải</button>
     </div>
   <div id="result"></div>
          
@@ -898,6 +906,14 @@ if (!imageContainer.contains(img)) {
 
 });
 
+document.getElementById('deleteResultBtn').addEventListener('click', () => {
+    // Xóa bài giải hiển thị
+    const resultDiv = document.getElementById('result');
+    if (resultDiv) {
+        resultDiv.innerHTML = '';
+    }
+    alert('Bài giải đã được xóa.');
+});
 });
 
             // Các đoạn mã ngăn chặn xem mã nguồn và bảo vệ nội dung
