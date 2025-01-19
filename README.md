@@ -813,14 +813,41 @@ function checkCameraAccess() {
             }
         });
 
-	document.getElementById('selectProblemBtn').addEventListener('click', () => {
-    	const problemIndexInput = document.getElementById('problemIndexInput').value;
-   	 if (problemIndexInput) {
-        displayProblemByIndex(problemIndexInput);
-   	 } else {
+	document.getElementById('selectProblemBtn').addEventListener('click', async () => {
+    const problemIndexInput = document.getElementById('problemIndexInput').value.trim();
+
+    // Kiểm tra xem người dùng đã nhập số thứ tự hay chưa
+    if (!problemIndexInput) {
         alert('Vui lòng nhập số thứ tự bài cần chọn.');
-    	}
-	});
+        return;
+    }
+
+    // Tìm bài tập theo số thứ tự
+    const selectedProblem = problems.find(problem => parseInt(problem.index) === parseInt(problemIndexInput));
+
+    if (selectedProblem) {
+        // Hiển thị đề bài
+        document.getElementById('problemText').innerHTML = formatProblemText(selectedProblem.problem);
+
+        // Gọi hàm generateHint() để tạo gợi ý
+        try {
+            currentHint = await generateHint(selectedProblem.problem);
+            console.log('Gợi ý cho bài tập đã chọn:', currentHint);
+        } catch (error) {
+            console.error('Lỗi khi tạo gợi ý:', error);
+            currentHint = null;
+        }
+
+        // Hiển thị nội dung MathJax
+        MathJax.typesetPromise([document.getElementById('problemText')]).catch(err => {
+            console.error('MathJax rendering error:', err);
+        });
+    } else {
+        // Không tìm thấy bài tập
+        document.getElementById('problemText').textContent = `Không tìm thấy bài tập với số thứ tự ${problemIndexInput}.`;
+    }
+});
+
 	document.addEventListener('DOMContentLoaded', () => {
     const video = document.getElementById('cameraStream');
     const captureButton = document.getElementById('captureButton');
