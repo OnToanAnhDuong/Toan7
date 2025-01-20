@@ -270,7 +270,7 @@ button.delete:hover {
     <div id="bottomControls">
         <button id="submitBtn">Chấm Bài</button>
         <button id="hintBtn">Gợi ý</button>
-	<button id="deleteResultBtn">Xóa bài giải</button>
+	<button id="deleteAllBtn">Xóa tất cả</button>
     </div>
   <div id="result"></div>
          
