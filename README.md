@@ -933,14 +933,25 @@ if (!imageContainer.contains(img)) {
 
 });
 
-document.getElementById('deleteResultBtn').addEventListener('click', () => {
+document.getElementById('deleteAllBtn').addEventListener('click', () => {
+    // Xóa ảnh được hiển thị
+    const img = document.getElementById('capturedImage');
+    if (img) {
+        img.src = ''; // Đặt lại ảnh
+        img.style.display = 'none'; // Ẩn ảnh
+    }
+    base64Image = ''; // Xóa dữ liệu base64 của ảnh
+
     // Xóa bài giải hiển thị
     const resultDiv = document.getElementById('result');
     if (resultDiv) {
-        resultDiv.innerHTML = '';
+        resultDiv.innerHTML = ''; // Xóa nội dung bài giải
     }
-    alert('Bài giải đã được xóa.');
+
+    // Thông báo hành động hoàn thành
+    alert('Đã xóa tất cả ảnh và bài giải.');
 });
+
 });
 
             // Các đoạn mã ngăn chặn xem mã nguồn và bảo vệ nội dung
