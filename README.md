@@ -115,10 +115,6 @@
     border-radius: 5px;
 }
 
-
-
-
-
 #captureButton {
     margin-top: 10px;
     padding: 10px 20px;
@@ -290,8 +286,7 @@ button.delete:hover {
         <img id="capturedImage" alt="Ảnh đã chụp" style="max-width: 100%; display: none;">
     </div>
 </div>
-    
-      
+          
     </div>
 
     <script>
@@ -372,7 +367,6 @@ button.delete:hover {
     })).filter(item => item.problem && item.index);
 }
 
-
         function displayNextProblem() {
     if (problems.length > 0) {
         // Nếu chỉ số hiện tại vượt quá số bài, quay lại bài đầu tiên (tuỳ chọn)
@@ -408,7 +402,6 @@ function displayProblemByIndex(index) {
         document.getElementById('problemText').textContent = `Không tìm thấy bài tập với số thứ tự ${index}.`;
     }
 }
-
 
         function formatProblemText(problemText) {
             return problemText.replace(/\n/g, '<br>').replace(/([a-d]\))/g, '<br>$1');
@@ -721,8 +714,6 @@ function checkCameraAccess() {
    	 }
 	}
 
-
-
         function showMessageBox(message) {
             const overlay = document.createElement('div');
             overlay.className = 'message-box-overlay';
@@ -751,7 +742,6 @@ function checkCameraAccess() {
     alert('Vui lòng chọn hoặc chụp ảnh bài làm của học sinh.');
     return;
 }
-
 
     // Ưu tiên ảnh từ camera, nếu không có thì sử dụng ảnh tải lên từ file
     const imageToProcess = base64Image || (studentFileInput.files.length > 0 ? await getBase64(studentFileInput.files[0]) : null);
