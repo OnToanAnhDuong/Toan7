@@ -9,7 +9,7 @@
             margin: 30px;
             line-height: 1.6;
         }
-        h1, h2 {
+        h1 {
             color: #333;
             text-align: center;
         }
@@ -37,7 +37,7 @@
         button:hover {
             background-color: #4cae4c;
         }
-        #result, #hintText {
+        #result {
             margin-top: 20px;
             background-color: #f8f8f8;
             padding: 15px;
