@@ -960,10 +960,12 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
     alert('Đã xóa tất cả ảnh và bài giải.');
 });
 async function loadStudentList() {
+    console.log('Đang tải danh sách học sinh...');
     const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tq=&tqx=out:json`;
 
     try {
         const response = await fetch(SHEET_URL);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const text = await response.text();
         const jsonData = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
         const rows = jsonData.table.rows;
@@ -981,10 +983,14 @@ async function loadStudentList() {
                 studentDropdown.appendChild(option);
             }
         });
+
+        console.log('Danh sách học sinh đã tải xong.');
     } catch (error) {
         console.error('Lỗi khi tải danh sách học sinh:', error);
+        throw error;
     }
 }
+
 async function checkStudentId(studentId) {
     const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tq=&tqx=out:json`;
 
