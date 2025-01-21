@@ -133,11 +133,16 @@
                 const response = await fetch(SHEET_URL);
                 if (!response.ok) throw new Error('Không thể tải bài tập từ Google Sheet');
                 const data = await response.json();
+                if (!data.values || data.values.length <= 1) {
+                    console.error('Không có dữ liệu bài tập hợp lệ!');
+                    return [];
+                }
                 const rows = data.values.slice(1); // Bỏ qua tiêu đề
                 console.log('Bài tập đã tải:', rows);
                 return rows;
             } catch (error) {
                 console.error('Lỗi khi tải bài tập:', error);
+                return [];
             }
         }
 
@@ -148,9 +153,9 @@
                 return;
             }
             const selectedProblem = problems[index - 1];
-            if (selectedProblem) {
+            if (selectedProblem && selectedProblem.length > 1) {
                 document.getElementById('problemText').innerHTML = selectedProblem[1];
-                MathJax.typesetPromise([document.getElementById('problemText')]);
+                await MathJax.typesetPromise([document.getElementById('problemText')]);
             } else {
                 document.getElementById('problemText').textContent = 'Không tìm thấy bài tập với số thứ tự đã chọn!';
             }
@@ -166,10 +171,10 @@
             }
         });
 
-        document.getElementById('selectProblemBtn').addEventListener('click', () => {
+        document.getElementById('selectProblemBtn').addEventListener('click', async () => {
             const index = document.getElementById('problemIndexInput').value.trim();
             if (index) {
-                displayProblemByIndex(parseInt(index));
+                await displayProblemByIndex(parseInt(index));
             } else {
                 alert('Vui lòng nhập số thứ tự bài tập!');
             }
