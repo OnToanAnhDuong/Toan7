@@ -252,12 +252,7 @@ button.delete:hover {
     <!-- Hàng trên cùng: Khung nhập số và các nút liên quan -->
     <div id="topControls">
         <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)" />
-       <div id="studentListContainer" style="display: none;">
-    <h2>Danh sách học sinh</h2>
-    <select id="studentSelector">
-        <option value="">-- Chọn học sinh --</option>
-    </select>
-</div>
+       
 	<button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
     </div>
@@ -294,7 +289,12 @@ button.delete:hover {
 </div>
           
     </div>
-
+<div id="studentListContainer" style="display: none;">
+    <h2>Danh sách học sinh</h2>
+    <select id="studentSelector">
+        <option value="">-- Chọn học sinh --</option>
+    </select>
+</div>
     <script>
         const SHEET_ID = '175acnaYklfdCc_UJ7B3LJgNaUJpfrIENxn6LN76QADM';
         const SHEET_NAME = 'Toan7';
