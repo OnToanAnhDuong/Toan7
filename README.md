@@ -790,7 +790,7 @@ function checkCameraAccess() {
             }
         });
 
-        document.getElementById('loginBtn').addEventListener('click', async () => {
+       document.getElementById('loginBtn').addEventListener('click', async () => {
     const userId = document.getElementById('userId').value.trim();
 
     if (!userId) {
@@ -803,17 +803,27 @@ function checkCameraAccess() {
         document.getElementById('loginContainer').style.display = 'none';
         document.getElementById('mainContent').style.display = 'block';
         document.getElementById('studentSelection').style.display = 'block'; // Hiển thị danh sách học sinh
-        await loadStudentList(); // Tải danh sách học sinh từ Google Sheets
-        document.getElementById('welcomeMessage').textContent = `Xin chào Giáo viên (${userId})!`;
+        try {
+            await loadStudentList(); // Tải danh sách học sinh
+            document.getElementById('welcomeMessage').textContent = `Xin chào Giáo viên (${userId})!`;
+        } catch (error) {
+            console.error('Lỗi khi tải danh sách học sinh:', error);
+            alert('Không thể tải danh sách học sinh. Vui lòng thử lại sau.');
+        }
     } else if (userId.startsWith('HS')) {
         // Học sinh đăng nhập
-        const isValidStudent = await checkStudentId(userId);
-        if (isValidStudent) {
-            document.getElementById('loginContainer').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'block';
-            document.getElementById('welcomeMessage').textContent = `Xin chào Học sinh: ${studentName}`;
-        } else {
-            alert('Mã học sinh không hợp lệ.');
+        try {
+            const isValidStudent = await checkStudentId(userId);
+            if (isValidStudent) {
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                document.getElementById('welcomeMessage').textContent = `Xin chào Học sinh: ${studentName}`;
+            } else {
+                alert('Mã học sinh không hợp lệ.');
+            }
+        } catch (error) {
+            console.error('Lỗi khi kiểm tra mã học sinh:', error);
+            alert('Không thể kiểm tra mã học sinh. Vui lòng thử lại sau.');
         }
     } else {
         alert('Mã người dùng không hợp lệ.');
@@ -965,6 +975,7 @@ async function loadStudentList() {
 
     try {
         const response = await fetch(SHEET_URL);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const text = await response.text();
         const jsonData = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
         const rows = jsonData.table.rows;
@@ -983,12 +994,6 @@ async function loadStudentList() {
             }
         });
 
-        console.log('Danh sách học sinh đã tải xong:', rows);
-    } catch (error) {
-        console.error('Lỗi khi tải danh sách học sinh:', error);
-    }
-}
-
         console.log('Danh sách học sinh đã tải xong.');
     } catch (error) {
         console.error('Lỗi khi tải danh sách học sinh:', error);
@@ -997,6 +1002,7 @@ async function loadStudentList() {
 }
 
 async function checkStudentId(studentId) {
+    console.log(`Đang kiểm tra mã học sinh: ${studentId}`);
     const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tq=&tqx=out:json`;
 
     try {
@@ -1008,14 +1014,17 @@ async function checkStudentId(studentId) {
         const studentRow = rows.find(row => row.c[0]?.v?.toString() === studentId);
         if (studentRow) {
             studentName = studentRow.c[1]?.v || ''; // Lưu tên học sinh
+            console.log(`Tìm thấy học sinh: ${studentName}`);
             return true;
         }
+        console.warn('Không tìm thấy mã học sinh.');
         return false;
     } catch (error) {
         console.error('Lỗi khi kiểm tra mã học sinh:', error);
-        return false;
+        throw error;
     }
 }
+
 
 });
 
