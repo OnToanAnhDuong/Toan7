@@ -242,7 +242,7 @@ button.delete:hover {
     </script>
 </head>
 <body>
-    <h1>ÔN LYỆN TOÁN LỚP 6  - TRUNG TÂM ÁNH DƯƠNG</h1>
+    <h1>ÔN LYỆN TOÁN LỚP 7  - TRUNG TÂM ÁNH DƯƠNG</h1>
     
     <div id="loginContainer">
         <input type="text" id="studentId" placeholder="Nhập mã học sinh">
@@ -255,7 +255,12 @@ button.delete:hover {
         <button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
     </div>
-
+<div id="studentListContainer" style="display: none;">
+    <h2>Danh sách học sinh</h2>
+    <select id="studentSelector">
+        <option value="">-- Chọn học sinh --</option>
+    </select>
+</div>
     <!-- Hàng thứ hai: Đề bài -->
     <div id="problemContainer">
         <label for="problemText">Đề bài:</label>
@@ -291,7 +296,7 @@ button.delete:hover {
 
     <script>
         const SHEET_ID = '175acnaYklfdCc_UJ7B3LJgNaUJpfrIENxn6LN76QADM';
-        const SHEET_NAME = 'Toan6';
+        const SHEET_NAME = 'Toan7';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tq=&tqx=out:json`;
 
         const API_KEYS = ['AIzaSyCzh6doVzV7Dbmbz60B9pNUQIel2N6KEcI', 'AIzaSyBVQcUrVTtwKeAAsFR8ENM8-kgZl8CsUM0', 'AIzaSyCmY4FdhZ4qSN6HhBtldgQgSNbDlZ4J1ug', 'AIzaSyAkX3rMYxN_-aO95QKMPy-OLIV62esaANU', 'AIzaSyDtmacgYKn1PBgCVWkReF9Kyn6vC4DKZmg', 'AIzaSyAusgvzZkUPT9lHoB7vzZW_frx-Z0xIxU8', 'AIzaSyBBNxoJh9UZXbc4shgRc7nUiJKya3JR2eI', 'AIzaSyAru8K7uUTD85FOCmrNESQmQYh-gfFCOZ8', 'AIzaSyAkDbRl7iBYWhc00KZ9dZL1_l0cobcC0ak', 'AIzaSyAJ9DpLy4uLfbFoyh7IhW9N0uk9YkBEUY4'];
@@ -730,47 +735,78 @@ function checkCameraAccess() {
         }
 
        document.getElementById('submitBtn').addEventListener('click', async () => {
+    // Kiểm tra xem đã chọn học sinh hay chưa
+    if (!selectedStudentId) {
+        alert('Vui lòng chọn học sinh trước khi chấm bài.');
+        return;
+    }
+
     const problemText = document.getElementById('problemText')?.innerHTML?.trim();
     const studentFileInput = document.getElementById('studentImage');
 
+    // Kiểm tra xem đã có đề bài hay chưa
     if (!problemText) {
         alert('Vui lòng đợi đề bài được tải.');
         return;
     }
 
-  if (!base64Image && !studentFileInput?.files?.length) {
-    alert('Vui lòng chọn hoặc chụp ảnh bài làm của học sinh.');
-    return;
-}
+    // Lấy ảnh từ camera hoặc file tải lên (ưu tiên ảnh chụp)
+    let imageToProcess = null;
+    if (base64Image) {
+        // Nếu có ảnh chụp từ camera
+        imageToProcess = base64Image;
+    } else if (studentFileInput?.files?.length > 0) {
+        // Nếu không có ảnh chụp nhưng có ảnh tải lên
+        imageToProcess = await getBase64(studentFileInput.files[0]);
+    }
 
-    // Ưu tiên ảnh từ camera, nếu không có thì sử dụng ảnh tải lên từ file
-    const imageToProcess = base64Image || (studentFileInput.files.length > 0 ? await getBase64(studentFileInput.files[0]) : null);
-
+    // Kiểm tra lại ảnh
     if (!imageToProcess) {
         alert('Không thể lấy ảnh bài làm. Vui lòng thử lại.');
         return;
     }
 
     try {
+        // Hiển thị trạng thái đang xử lý
         document.getElementById('result').innerText = 'Đang xử lý...';
 
-        // Gửi ảnh để chấm bài
-        const { studentAnswer, feedback, score } = await gradeWithGemini(imageToProcess, problemText, currentStudentId);
+        // Gửi ảnh và đề bài để chấm bài
+        const { studentAnswer, feedback, score } = await gradeWithGemini(imageToProcess, problemText, selectedStudentId, selectedStudentName);
 
-        const submitted = await submitToGoogleForm(score, currentStudentId, problemText, studentAnswer, feedback, studentName);
+        // Kiểm tra nếu không có bài làm hợp lệ
+        if (!studentAnswer || score === 0) {
+            alert('Bài làm không hợp lệ hoặc không khớp với đề bài.');
+            document.getElementById('result').innerHTML = 'Không thể chấm bài. Hãy kiểm tra lại bài làm.';
+            return;
+        }
+
+        // Gửi kết quả vào Google Form
+        const submitted = await submitToGoogleForm(score, selectedStudentId, problemText, studentAnswer, feedback, selectedStudentName);
 
         if (submitted) {
-            document.getElementById('result').innerHTML = feedback;
+            // Hiển thị kết quả sau khi chấm bài
+            document.getElementById('result').innerHTML = `
+                <strong>Kết quả:</strong><br>
+                Điểm: ${score.toFixed(1)}/10<br>
+                Nhận xét: ${feedback}
+            `;
             MathJax.typesetPromise([document.getElementById('result')]).catch(err => console.error('MathJax rendering error:', err));
+
+            // Cập nhật tiến trình học sinh (tổng bài làm, điểm trung bình)
             await updateProgress(score);
+
+            // Xóa ảnh đã chấm để giáo viên tiếp tục chấm bài khác
+            clearImageData();
         } else {
             throw new Error('Không thể gửi dữ liệu đến Google Form.');
         }
     } catch (error) {
-        console.error('Lỗi:', error);
+        // Xử lý lỗi
+        console.error('Lỗi khi chấm bài:', error);
         document.getElementById('result').innerText = `Đã xảy ra lỗi: ${error.message}. Vui lòng thử lại sau.`;
     }
 });
+
 
         document.getElementById('randomProblemBtn').addEventListener('click', () => {
             displayRandomProblem();
@@ -784,24 +820,19 @@ function checkCameraAccess() {
             }
         });
 
-        document.getElementById('loginBtn').addEventListener('click', async () => {
-            const studentId = document.getElementById('studentId').value.trim();
-            if (studentId) {
-                const isValidStudent = await checkStudentId(studentId);
-                if (isValidStudent) {
-                    currentStudentId = studentId;
-                    document.getElementById('loginContainer').style.display = 'none';
-                    document.getElementById('mainContent').style.display = 'block';
-                    document.getElementById('randomProblemBtn').textContent = `Lấy đề bài ngẫu nhiên (${currentStudentId})`;
-                    await fetchProblems();
-                    await updateProgress(0);
-                } else {
-                    alert('Mã học sinh không hợp lệ. Vui lòng thử lại.');
-                }
-            } else {
-                alert('Vui lòng nhập mã học sinh');
-            }
-        });
+       document.getElementById('loginBtn').addEventListener('click', async () => {
+    const studentId = document.getElementById('studentId').value.trim();
+    if (studentId.startsWith('GV')) { // Kiểm tra nếu là tài khoản giáo viên
+        currentStudentId = studentId;
+        document.getElementById('loginContainer').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+
+        // Hiển thị danh sách học sinh
+        loadStudentList();
+    } else {
+        alert('Mã tài khoản không hợp lệ. Vui lòng thử lại.');
+    }
+});
 
 	document.getElementById('selectProblemBtn').addEventListener('click', async () => {
     const problemIndexInput = document.getElementById('problemIndexInput').value.trim();
@@ -940,6 +971,41 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
 
     // Thông báo hành động hoàn thành
     alert('Đã xóa tất cả ảnh và bài giải.');
+});
+async function loadStudentList() {
+    const studentListUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=StudentProgress&tq=&tqx=out:json`;
+    try {
+        const response = await fetch(studentListUrl);
+        const text = await response.text();
+        const jsonData = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
+        const rows = jsonData.table.rows;
+
+        // Lấy danh sách học sinh
+        const studentSelector = document.getElementById('studentSelector');
+        rows.forEach(row => {
+            const studentId = row.c[0]?.v || '';
+            const studentName = row.c[3]?.v || '';
+            if (studentId && studentName) {
+                const option = document.createElement('option');
+                option.value = studentId;
+                option.textContent = `${studentName} (${studentId})`;
+                studentSelector.appendChild(option);
+            }
+        });
+
+        document.getElementById('studentListContainer').style.display = 'block';
+    } catch (error) {
+        console.error('Lỗi khi tải danh sách học sinh:', error);
+    }
+}
+let selectedStudentId = null;
+let selectedStudentName = null;
+
+document.getElementById('studentSelector').addEventListener('change', (e) => {
+    const selectedOption = e.target.options[e.target.selectedIndex];
+    selectedStudentId = e.target.value;
+    selectedStudentName = selectedOption.textContent.split(' ')[0];
+    console.log(`Đã chọn học sinh: ${selectedStudentName} (${selectedStudentId})`);
 });
 
 });
