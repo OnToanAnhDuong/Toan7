@@ -965,7 +965,6 @@ async function loadStudentList() {
 
     try {
         const response = await fetch(SHEET_URL);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const text = await response.text();
         const jsonData = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
         const rows = jsonData.table.rows;
@@ -983,6 +982,12 @@ async function loadStudentList() {
                 studentDropdown.appendChild(option);
             }
         });
+
+        console.log('Danh sách học sinh đã tải xong:', rows);
+    } catch (error) {
+        console.error('Lỗi khi tải danh sách học sinh:', error);
+    }
+}
 
         console.log('Danh sách học sinh đã tải xong.');
     } catch (error) {
