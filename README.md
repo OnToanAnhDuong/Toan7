@@ -976,15 +976,17 @@ async function loadStudentList() {
 
     try {
         const response = await fetch(SHEET_URL);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         
         const text = await response.text();
-        console.log('Phản hồi từ Google Sheets:', text); // Kiểm tra phản hồi từ Google Sheets
+        console.log('Phản hồi từ Google Sheets:', text); // Ghi lại phản hồi từ Google Sheets
         const jsonData = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
-        
+
         const rows = jsonData.table.rows;
-        console.log('Danh sách học sinh:', rows); // Kiểm tra danh sách học sinh đã tải
-        
+        console.log('Danh sách học sinh:', rows); // Kiểm tra dữ liệu tải được
+
         const studentDropdown = document.getElementById('studentDropdown');
         studentDropdown.innerHTML = ''; // Xóa danh sách cũ
 
