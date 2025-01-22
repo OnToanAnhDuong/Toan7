@@ -254,11 +254,6 @@ button.delete:hover {
         <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)" />
         <button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
-	<button id="viewHistoryBtn">Xem lịch sử làm bài</button>
-<div id="historyContainer" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px; display: none;">
-    <h3>Lịch sử làm bài</h3>
-    <div id="historyContent"></div>
-</div>
     </div>
 
     <!-- Hàng thứ hai: Đề bài -->
@@ -945,45 +940,6 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
 
     // Thông báo hành động hoàn thành
     alert('Đã xóa tất cả ảnh và bài giải.');
-});
-document.getElementById('viewHistoryBtn').addEventListener('click', async () => {
-    const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU'; // Thay bằng ID Google Sheet của bạn
-    const sheetName = 'StudentProgress'; // Tên Sheet chứa dữ liệu lịch sử
-    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${sheetName}&tqx=out:json`;
-
-    try {
-        // Lấy dữ liệu từ Google Sheet
-        const response = await fetch(sheetUrl);
-        const text = await response.text();
-        const jsonData = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
-        const rows = jsonData.table.rows;
-
-        // Lọc thông tin lịch sử dựa trên mã học sinh
-        const historyData = rows.filter(row => row.c[0]?.v === currentStudentId); // Lọc theo cột A (Mã học sinh)
-
-        // Tạo HTML hiển thị thông tin
-        const historyHtml = historyData.map(row => {
-            const studentName = row.c[1]?.v || 'Không rõ'; // Cột B: Tên học sinh
-            const completedExercises = row.c[2]?.v || '0'; // Cột C: Số bài tập đã làm
-            const averageScore = row.c[3]?.v || '0'; // Cột D: Điểm trung bình
-            return `
-                <div style="margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #ddd;">
-                    <p><strong>Tên:</strong> ${studentName}</p>
-                    <p><strong>Số bài được chấm:</strong> ${completedExercises}</p>
-                    <p><strong>Điểm trung bình:</strong> ${averageScore}</p>
-                </div>
-            `;
-        }).join('');
-
-        // Hiển thị lịch sử
-        const historyContainer = document.getElementById('historyContainer');
-        const historyContent = document.getElementById('historyContent');
-        historyContent.innerHTML = historyHtml || 'Không tìm thấy dữ liệu lịch sử cho mã học sinh này.';
-        historyContainer.style.display = 'block';
-    } catch (error) {
-        console.error('Lỗi khi tải lịch sử làm bài:', error);
-        alert('Không thể tải lịch sử làm bài. Vui lòng thử lại sau.');
-    }
 });
 
 });
