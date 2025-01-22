@@ -99,7 +99,21 @@
             bottom: 0;
             background-color: rgba(0,0,0,0.5);
             z-index: 999;
-        }	 
+        }
+	.info-container {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+
+        .info-container p {
+            margin: 10px 0;
+        }
+
+        .info-container span {
+            color: red; /* Màu đỏ cho số bài và điểm */
+            font-weight: bold;
+	    }
 #cameraContainer {
     margin-top: 20px;
     text-align: center;
@@ -242,15 +256,16 @@ button.delete:hover {
     </script>
 </head>
 <body>
-    <h1>ÔN LYỆN TOÁN LỚP 7  - TRUNG TÂM ÁNH DƯƠNG</h1>
-    
-    <div id="loginContainer">
+    <h1>ÔN LYỆN TOÁN LỚP 6  - TRUNG TÂM ÁNH DƯƠNG</h1>
+    <div class="info-container">
+        <p>Số bài đã làm: <span id="completedExercises">0</span></p>
+        <p>Điểm trung bình: <span id="averageScore">0</span></p>
+    </div>
+        <div id="loginContainer">
         <input type="text" id="studentId" placeholder="Nhập mã học sinh">
         <button id="loginBtn">Đăng nhập</button>
     </div>
-  <p>Số bài đã làm: <span id="completedExercises" style="color: red; font-weight: bold;">0</span></p>
-<p>Điểm trung bình: <span id="averageScore" style="color: red; font-weight: bold;">0</span></p>
-<div id="mainContent" style="display: none;">
+ <div id="mainContent" style="display: none;">
     <!-- Hàng trên cùng: Khung nhập số và các nút liên quan -->
     <div id="topControls">
         <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)" />
@@ -943,62 +958,58 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
     // Thông báo hành động hoàn thành
     alert('Đã xóa tất cả ảnh và bài giải.');
 });
-document.getElementById('loginBtn').addEventListener('click', async () => {
-    const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU'; // ID Google Sheet
-    const sheetName = 'StudentProgress'; // Tên tab trong Google Sheet
-    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${sheetName}&tqx=out:json`;
-
-    const studentId = document.getElementById('studentId').value.trim();
-    if (!studentId) {
-        alert('Vui lòng nhập mã học sinh.');
-        return;
-    }
-
-    try {
-        const response = await fetch(sheetUrl);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const text = await response.text();
-        const jsonDataMatch = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/);
-        if (!jsonDataMatch) {
-            throw new Error('Không thể phân tích dữ liệu từ Google Sheet.');
-        }
-
-        const jsonData = JSON.parse(jsonDataMatch[1]);
-        const rows = jsonData.table.rows;
-
-        if (!rows || rows.length === 0) {
-            alert('Google Sheet không chứa dữ liệu lịch sử.');
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+        const studentId = document.getElementById('studentId').value.trim();
+        
+        if (!studentId) {
+            alert('Vui lòng nhập mã học sinh.');
             return;
         }
 
-        // Lọc thông tin theo mã học sinh
-        const studentData = rows.find(row => {
-            const sheetId = (row.c[0]?.v || '').toString().trim();
-            return sheetId === studentId;
-        });
+        // Lấy thông tin từ Google Sheet
+        try {
+            const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU';  // Thay bằng ID thực tế của Google Sheet
+            const sheetName = 'StudentProgress';       // Tên tab trong Google Sheet (phải giống)
+            const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${sheetName}&tqx=out:json`;
 
-        if (!studentData) {
-            alert(`Không tìm thấy lịch sử cho mã học sinh: ${studentId}`);
-            return;
+            const response = await fetch(sheetUrl);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const text = await response.text();
+            const jsonDataMatch = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/);
+            if (!jsonDataMatch) {
+                throw new Error('Không thể phân tích dữ liệu từ Google Sheet.');
+            }
+
+            const jsonData = JSON.parse(jsonDataMatch[1]);
+            const rows = jsonData.table.rows;
+
+            if (!rows || rows.length === 0) {
+                alert('Không tìm thấy dữ liệu.');
+                return;
+            }
+
+            // Lọc thông tin học sinh theo mã
+            const studentData = rows.find(row => row.c[0]?.v === studentId);
+
+            if (!studentData) {
+                alert(`Không tìm thấy tiến độ cho mã học sinh: ${studentId}`);
+                return;
+            }
+
+            // Cập nhật thông tin lên giao diện
+            document.getElementById('completedExercises').textContent = studentData.c[2]?.v || '0'; // Số bài đã làm
+            document.getElementById('averageScore').textContent = studentData.c[3]?.v || '0'; // Điểm trung bình
+
+        } catch (error) {
+            console.error('Lỗi khi tải tiến độ:', error);
+            alert(`Không thể tải tiến độ học tập. Chi tiết lỗi: ${error.message}`);
         }
-
-        // Hiển thị tiến độ
-        document.getElementById('progressContainer').style.display = 'block';
-        document.getElementById('completedExercises').textContent = studentData.c[2]?.v || '0'; // Cột C: Số bài tập đã làm
-        document.getElementById('averageScore').textContent = studentData.c[3]?.v || '0'; // Cột D: Điểm trung bình
-
-        // Chuyển sang giao diện chính
-       document.getElementById('completedExercises').textContent = studentData.c[2]?.v || '0'; // Số bài đã làm (Cột C)
-document.getElementById('averageScore').textContent = studentData.c[3]?.v || '0'; // Điểm trung bình (Cột D)
-    } catch (error) {
-        console.error('Lỗi khi tải dữ liệu:', error);
-        alert(`Không thể tải tiến độ học tập. Chi tiết lỗi: ${error.message}`);
-    }
+    });
 });
-
 
 });
 
