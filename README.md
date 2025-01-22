@@ -104,20 +104,21 @@
             z-index: 999;
         }
 	#progressContainer {
-        margin-top: 20px;
-        background-color: #eef9ff;
-        padding: 15px;
-        border: 1px solid #007bff;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-    #progressContainer h3 {
-        color: #007bff;
-    }
-    #progressContainer p {
-        margin: 5px 0;
-        line-height: 1.5;
-    }
+    margin-top: 20px;
+    font-size: 16px; /* Kích cỡ chữ */
+    text-align: left; /* Căn trái */
+}
+
+#progressContainer p {
+    display: flex; /* Sử dụng flexbox để căn chỉnh theo chiều ngang */
+    gap: 10px; /* Khoảng cách giữa các phần tử */
+    margin: 0; /* Loại bỏ khoảng cách mặc định của thẻ <p> */
+}
+
+#progressContainer span {
+    font-weight: bold; /* Làm đậm số liệu */
+    color: red; /* Màu đỏ cho số liệu */
+}
 	#cameraContainer {
     margin-top: 20px;
     text-align: center;
@@ -171,30 +172,37 @@
 #topControls {
     display: flex; /* Sắp xếp các phần tử trên một hàng ngang */
     justify-content: center; /* Căn giữa các phần tử */
+    align-items: center; /* Căn giữa theo chiều dọc */
     gap: 20px; /* Khoảng cách giữa các phần tử */
     margin-bottom: 20px; /* Khoảng cách dưới hàng */
+    height: auto; /* Chiều cao tự động theo phần tử con */
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước */
 }
 
 #topControls input[type="number"] {
     width: 200px; /* Đặt chiều rộng cho khung nhập số */
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+    height: 40px; /* Chiều cao khớp với nút */
+    padding: 5px 10px; /* Giảm padding để khớp với nút */
+    border: 1px solid #ddd; /* Viền xám nhạt */
+    border-radius: 5px; /* Bo góc nhẹ */
+    font-size: 14px; /* Cỡ chữ nhỏ hơn một chút */
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước */
 }
 
 #topControls button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
+    padding: 0 15px; /* Giảm padding để khớp chiều cao với input */
+    background-color: #007bff; /* Màu nền xanh */
+    color: white; /* Màu chữ trắng */
+    border: none; /* Loại bỏ viền */
+    border-radius: 5px; /* Bo góc nhẹ */
+    font-size: 14px; /* Cỡ chữ nhỏ hơn */
+    cursor: pointer; /* Con trỏ dạng tay */
+    height: 40px; /* Đảm bảo chiều cao khớp với input */
+    line-height: 1; /* Đảm bảo nội dung căn giữa */
 }
 
 #topControls button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Màu xanh đậm hơn khi rê chuột */
 }
 
 /* Hàng thứ hai: Phần đề bài */
@@ -266,16 +274,18 @@ button.delete:hover {
         <input type="text" id="studentId" placeholder="Nhập mã học sinh">
         <button id="loginBtn">Đăng nhập</button>
     </div>
-    <div id="progressContainer" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px; display: none;">
-    <p><strong>Số bài đã làm:</strong> <span id="completedExercises">0</span></p>
-    <p><strong>Điểm trung bình:</strong> <span id="averageScore">0</span></p>
-</div>
-<div id="mainContent" style="display: none;">
+   <div id="mainContent" style="display: none;">
     <!-- Hàng trên cùng: Khung nhập số và các nút liên quan -->
     <div id="topControls">
         <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)" />
         <button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
+	<div id="progressContainer" style="display: none;">
+    <p>
+        Số bài: <span id="completedExercises">0</span> | 
+        Điểm TB: <span id="averageScore">0</span>
+    </p>
+</div>
     </div>
 
     <!-- Hàng thứ hai: Đề bài -->
