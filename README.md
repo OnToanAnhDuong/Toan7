@@ -59,7 +59,7 @@
         }
         #randomProblemBtn, #loginBtn {
             display: block;
-            width: 30%;
+            width: 50%;
             margin-bottom: 10px;
             padding: 10px;
             background-color: #007bff;
@@ -100,21 +100,7 @@
             background-color: rgba(0,0,0,0.5);
             z-index: 999;
         }
-	.info-container {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            color: #333;
-        }
-
-        .info-container p {
-            margin: 10px 0;
-        }
-
-        .info-container span {
-            color: red; /* Màu đỏ cho số bài và điểm */
-            font-weight: bold;
-	    }
-#cameraContainer {
+	#cameraContainer {
     margin-top: 20px;
     text-align: center;
 }
@@ -257,27 +243,29 @@ button.delete:hover {
 </head>
 <body>
     <h1>ÔN LYỆN TOÁN LỚP 6  - TRUNG TÂM ÁNH DƯƠNG</h1>
-    <div class="info-container">
-        <p>Số bài đã làm: <span id="completedExercises">0</span></p>
-        <p>Điểm trung bình: <span id="averageScore">0</span></p>
-    </div>
-        <div id="loginContainer">
+    
+    <div id="loginContainer">
         <input type="text" id="studentId" placeholder="Nhập mã học sinh">
         <button id="loginBtn">Đăng nhập</button>
     </div>
- <div id="mainContent" style="display: none;">
+<div id="mainContent" style="display: none;">
     <!-- Hàng trên cùng: Khung nhập số và các nút liên quan -->
     <div id="topControls">
         <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)" />
         <button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
-	
     </div>
+
     <!-- Hàng thứ hai: Đề bài -->
     <div id="problemContainer">
         <label for="problemText">Đề bài:</label>
         <div id="problemText"></div>
-	</div>
+	<button id="viewHistoryBtn">Xem lịch sử làm bài</button>
+<div id="historyContainer" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px; display: none;">
+    <h3>Lịch sử làm bài</h3>
+    <div id="historyContent"></div>
+</div>
+    </div>
 
     <!-- Hàng thứ ba: Các nút chức năng -->
     <div id="bottomControls">
@@ -958,57 +946,71 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
     // Thông báo hành động hoàn thành
     alert('Đã xóa tất cả ảnh và bài giải.');
 });
-document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('loginBtn').addEventListener('click', async () => {
-        const studentId = document.getElementById('studentId').value.trim();
-        
-        if (!studentId) {
-            alert('Vui lòng nhập mã học sinh.');
+document.getElementById('viewHistoryBtn').addEventListener('click', async () => {
+    const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU'; // ID Google Sheet
+    const sheetName = 'StudentProgress'; // Tên tab trong Google Sheet
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${sheetName}&tqx=out:json`;
+
+    try {
+        const response = await fetch(sheetUrl);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const text = await response.text();
+        const jsonDataMatch = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/);
+        if (!jsonDataMatch) {
+            throw new Error('Không thể phân tích dữ liệu từ Google Sheet.');
+        }
+
+        const jsonData = JSON.parse(jsonDataMatch[1]);
+        const rows = jsonData.table.rows;
+
+        if (!rows || rows.length === 0) {
+            console.warn('Google Sheet không có dữ liệu.');
+            alert('Không có dữ liệu lịch sử làm bài trong Google Sheet.');
             return;
         }
 
-        // Lấy thông tin từ Google Sheet
-        try {
-            const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU';  // Thay bằng ID thực tế của Google Sheet
-            const sheetName = 'StudentProgress';       // Tên tab trong Google Sheet (phải giống)
-            const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${sheetName}&tqx=out:json`;
+        console.log('Dữ liệu từ Google Sheet:', rows);
 
-            const response = await fetch(sheetUrl);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
+        // Lọc dữ liệu theo mã học sinh
+        const historyData = rows.filter(row => {
+            const sheetId = (row.c[0]?.v || '').toString().trim();
+            const inputId = currentStudentId.toString().trim();
+            return sheetId === inputId;
+        });
 
-            const text = await response.text();
-            const jsonDataMatch = text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/);
-            if (!jsonDataMatch) {
-                throw new Error('Không thể phân tích dữ liệu từ Google Sheet.');
-            }
-
-            const jsonData = JSON.parse(jsonDataMatch[1]);
-            const rows = jsonData.table.rows;
-
-            if (!rows || rows.length === 0) {
-                alert('Không tìm thấy dữ liệu.');
-                return;
-            }
-
-            // Lọc thông tin học sinh theo mã
-            const studentData = rows.find(row => row.c[0]?.v === studentId);
-
-            if (!studentData) {
-                alert(`Không tìm thấy tiến độ cho mã học sinh: ${studentId}`);
-                return;
-            }
-
-            // Cập nhật thông tin lên giao diện
-            document.getElementById('completedExercises').textContent = studentData.c[2]?.v || '0'; // Số bài đã làm
-            document.getElementById('averageScore').textContent = studentData.c[3]?.v || '0'; // Điểm trung bình
-
-        } catch (error) {
-            console.error('Lỗi khi tải tiến độ:', error);
-            alert(`Không thể tải tiến độ học tập. Chi tiết lỗi: ${error.message}`);
+        if (historyData.length === 0) {
+            console.warn('Không tìm thấy mã học sinh trong Sheet:', currentStudentId);
+            alert(`Không tìm thấy lịch sử cho mã học sinh: ${currentStudentId}.`);
+            document.getElementById('historyContent').innerHTML = `
+                <p>Không tìm thấy lịch sử cho mã học sinh: <strong>${currentStudentId}</strong>.</p>
+            `;
+            document.getElementById('historyContainer').style.display = 'block';
+            return;
         }
-    });
+
+        // Hiển thị lịch sử
+        const historyHtml = historyData.map(row => {
+            const studentName = row.c[1]?.v || 'Không rõ';
+            const completedExercises = row.c[2]?.v || '0';
+            const averageScore = row.c[3]?.v || '0';
+            return `
+                <div style="margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #ddd;">
+                    <p><strong>Tên:</strong> ${studentName}</p>
+                    <p><strong>Số bài tập đã làm:</strong> ${completedExercises}</p>
+                    <p><strong>Điểm trung bình:</strong> ${averageScore}</p>
+                </div>
+            `;
+        }).join('');
+
+        document.getElementById('historyContent').innerHTML = historyHtml;
+        document.getElementById('historyContainer').style.display = 'block';
+    } catch (error) {
+        console.error('Lỗi khi tải lịch sử:', error);
+        alert(`Không thể tải lịch sử làm bài. Chi tiết lỗi: ${error.message}`);
+    }
 });
 
 });
