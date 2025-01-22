@@ -263,16 +263,17 @@ button.delete:hover {
         <input type="text" id="studentId" placeholder="Nhập mã học sinh">
         <button id="loginBtn">Đăng nhập</button>
     </div>
+    <div id="progressContainer" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px; display: none;">
+   <p><strong>Số bài đã làm:</strong> <span id="completedExercises">0</span></p>
+    <p><strong>Điểm trung bình:</strong> <span id="averageScore">0</span></p>
+</div>    
 <div id="mainContent" style="display: none;">
     <!-- Hàng trên cùng: Khung nhập số và các nút liên quan -->
     <div id="topControls">
         <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)" />
         <button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
-	<div id="progressContainer" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px; display: none;">
-   <p><strong>Số bài đã làm:</strong> <span id="completedExercises">0</span></p>
-    <p><strong>Điểm trung bình:</strong> <span id="averageScore">0</span></p>
-</div>    
+	
     </div>
     <!-- Hàng thứ hai: Đề bài -->
     <div id="problemContainer">
