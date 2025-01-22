@@ -969,7 +969,7 @@ document.getElementById('viewHistoryBtn').addEventListener('click', async () => 
             return `
                 <div style="margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #ddd;">
                     <p><strong>Tên:</strong> ${studentName}</p>
-                    <p><strong>Số bài tập đã làm:</strong> ${completedExercises}</p>
+                    <p><strong>Số bài được chấm:</strong> ${completedExercises}</p>
                     <p><strong>Điểm trung bình:</strong> ${averageScore}</p>
                 </div>
             `;
