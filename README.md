@@ -62,7 +62,7 @@
         }
         #randomProblemBtn, #loginBtn {
             display: block;
-            width: 50%;
+            width: 30%;
             margin-bottom: 10px;
             padding: 10px;
             background-color: #007bff;
@@ -105,22 +105,26 @@
         }
 	#progressContainer {
     margin-top: 20px;
-    background-color: transparent; /* Loại bỏ nền */
-    padding: 0; /* Loại bỏ khoảng cách bên trong */
-    border: none; /* Loại bỏ đường viền */
-    border-radius: 0; /* Loại bỏ bo góc */
-    font-size: 16px; /* Giữ nguyên cỡ chữ nếu muốn */
+    text-align: left; /* Căn trái nội dung */
 }
-   
-   #progressContainer p {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    color: #333;
-    margin: 5px 0;
+
+.progress-box {
+    display: flex; /* Hiển thị nội dung theo chiều ngang */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    gap: 10px; /* Khoảng cách giữa các phần */
+    background-color: #007bff; /* Màu nền xanh */
+    color: white; /* Màu chữ trắng */
+    border-radius: 5px; /* Bo góc khung */
+    padding: 10px 20px; /* Khoảng cách trong khung */
+    font-size: 16px; /* Cỡ chữ */
+    font-weight: bold; /* Làm đậm chữ */
+    height: 40px; /* Chiều cao bằng nút nhấn */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Tạo hiệu ứng đổ bóng nhẹ */
 }
-#progressContainer span {
-    font-weight: bold;
-    color: red; /* Màu đỏ để làm nổi bật */
+
+.progress-box span {
+    color: #fff; /* Màu chữ của số liệu */
 }
 	    #cameraContainer {
     margin-top: 20px;
@@ -264,22 +268,25 @@ button.delete:hover {
     </script>
 </head>
 <body>
-    <h1>ÔN LYỆN TOÁN LỚP 6  - TRUNG TÂM ÁNH DƯƠNG</h1>
+    <h1>ÔN LYỆN TOÁN LỚP 7  - TRUNG TÂM ÁNH DƯƠNG</h1>
     
     <div id="loginContainer">
         <input type="text" id="studentId" placeholder="Nhập mã học sinh">
         <button id="loginBtn">Đăng nhập</button>
     </div>
-   <div id="progressContainer" style="display: none;">
-    <p>Số bài đã làm: <span id="completedExercises">0</span></p>
-    <p>Điểm trung bình: <span id="averageScore">0</span></p>
-</div>
+ 
 <div id="mainContent" style="display: none;">
     <!-- Hàng trên cùng: Khung nhập số và các nút liên quan -->
     <div id="topControls">
         <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)" />
         <button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
+	<div id="progressContainer" style="display: none;">
+    <div class="progress-box">
+        Số bài đã làm: <span id="completedExercises">0</span> | 
+        Điểm trung bình: <span id="averageScore">0</span>
+    </div>
+</div>    
     </div>
 
     <!-- Hàng thứ hai: Đề bài -->
