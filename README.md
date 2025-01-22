@@ -998,7 +998,8 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
         alert(`Không thể tải tiến độ học tập. Chi tiết lỗi: ${error.message}`);
     }
 });
-
+document.getElementById('completedExercises').textContent = studentData.c[2]?.v || '0'; // Số bài đã làm (Cột C)
+document.getElementById('averageScore').textContent = studentData.c[3]?.v || '0'; // Điểm trung bình (Cột D)
 
 });
 
