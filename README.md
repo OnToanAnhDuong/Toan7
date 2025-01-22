@@ -254,6 +254,7 @@ button.delete:hover {
         <input type="number" id="problemIndexInput" placeholder="Nhập số thứ tự (1, 2, ...)" />
         <button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
+	<button id="viewHistoryBtn">Xem lịch sử làm bài</button>
     </div>
 
     <!-- Hàng thứ hai: Đề bài -->
@@ -940,6 +941,25 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
 
     // Thông báo hành động hoàn thành
     alert('Đã xóa tất cả ảnh và bài giải.');
+});
+document.getElementById('viewHistoryBtn').addEventListener('click', async () => {
+    const historyUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=StudentProgress&tqx=out:json`;
+    try {
+        const response = await fetch(historyUrl);
+        const text = await response.text();
+        const jsonData = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
+        const rows = jsonData.table.rows;
+        let historyHtml = '<h3>Lịch sử làm bài:</h3><ul>';
+        rows.forEach(row => {
+            if (row.c[0]?.v === currentStudentId) {
+                historyHtml += `<li>${row.c[1]?.v || 'Bài tập'} - Điểm: ${row.c[2]?.v || '0'}</li>`;
+            }
+        });
+        historyHtml += '</ul>';
+        document.getElementById('result').innerHTML = historyHtml;
+    } catch (error) {
+        console.error('Lỗi khi tải lịch sử làm bài:', error);
+    }
 });
 
 });
