@@ -947,12 +947,11 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
     alert('Đã xóa tất cả ảnh và bài giải.');
 });
 document.getElementById('viewHistoryBtn').addEventListener('click', async () => {
-    const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU'; // Thay bằng ID Google Sheet
-    const sheetName = 'StudentProgress'; // Tên Sheet
+    const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU'; // ID Google Sheet
+    const sheetName = 'StudentProgress'; // Tên tab trong Google Sheet
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${sheetName}&tqx=out:json`;
 
     try {
-        // Fetch dữ liệu từ Google Sheet
         const response = await fetch(sheetUrl);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -967,21 +966,23 @@ document.getElementById('viewHistoryBtn').addEventListener('click', async () => 
         const jsonData = JSON.parse(jsonDataMatch[1]);
         const rows = jsonData.table.rows;
 
-        // Kiểm tra dữ liệu có tồn tại hay không
         if (!rows || rows.length === 0) {
-            console.error('Sheet không có dữ liệu.');
-            alert('Google Sheet không chứa thông tin lịch sử. Vui lòng kiểm tra lại.');
+            console.warn('Google Sheet không có dữ liệu.');
+            alert('Không có dữ liệu lịch sử làm bài trong Google Sheet.');
             return;
         }
 
-        // Debug: Log dữ liệu từ Google Sheet
         console.log('Dữ liệu từ Google Sheet:', rows);
 
-        // Lọc thông tin theo mã học sinh
-        const historyData = rows.filter(row => row.c[0]?.v === currentStudentId); // Lọc theo cột A (Mã học sinh)
+        // Lọc dữ liệu theo mã học sinh
+        const historyData = rows.filter(row => {
+            const sheetId = (row.c[0]?.v || '').toString().trim();
+            const inputId = currentStudentId.toString().trim();
+            return sheetId === inputId;
+        });
 
         if (historyData.length === 0) {
-            console.error('Không tìm thấy lịch sử cho mã:', currentStudentId);
+            console.warn('Không tìm thấy mã học sinh trong Sheet:', currentStudentId);
             alert(`Không tìm thấy lịch sử cho mã học sinh: ${currentStudentId}.`);
             document.getElementById('historyContent').innerHTML = `
                 <p>Không tìm thấy lịch sử cho mã học sinh: <strong>${currentStudentId}</strong>.</p>
@@ -990,11 +991,11 @@ document.getElementById('viewHistoryBtn').addEventListener('click', async () => 
             return;
         }
 
-        // Tạo HTML hiển thị thông tin
+        // Hiển thị lịch sử
         const historyHtml = historyData.map(row => {
-            const studentName = row.c[1]?.v || 'Không rõ'; // Cột B: Tên học sinh
-            const completedExercises = row.c[2]?.v || '0'; // Cột C: Số bài tập đã làm
-            const averageScore = row.c[3]?.v || '0'; // Cột D: Điểm trung bình
+            const studentName = row.c[1]?.v || 'Không rõ';
+            const completedExercises = row.c[2]?.v || '0';
+            const averageScore = row.c[3]?.v || '0';
             return `
                 <div style="margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #ddd;">
                     <p><strong>Tên:</strong> ${studentName}</p>
@@ -1004,13 +1005,11 @@ document.getElementById('viewHistoryBtn').addEventListener('click', async () => 
             `;
         }).join('');
 
-        // Hiển thị lịch sử
         document.getElementById('historyContent').innerHTML = historyHtml;
         document.getElementById('historyContainer').style.display = 'block';
     } catch (error) {
-        // Debug: Log lỗi nếu có
-        console.error('Lỗi khi tải lịch sử làm bài:', error);
-        alert(`Không thể tải lịch sử làm bài. Lỗi: ${error.message}`);
+        console.error('Lỗi khi tải lịch sử:', error);
+        alert(`Không thể tải lịch sử làm bài. Chi tiết lỗi: ${error.message}`);
     }
 });
 
