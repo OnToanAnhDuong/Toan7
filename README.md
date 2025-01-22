@@ -266,9 +266,9 @@ button.delete:hover {
         <input type="text" id="studentId" placeholder="Nhập mã học sinh">
         <button id="loginBtn">Đăng nhập</button>
     </div>
-    <div id="progressContainer" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px; display: none;">
-    <p><strong>Số bài đã làm:</strong> <span id="completedExercises">0</span></p>
-    <p><strong>Điểm trung bình:</strong> <span id="averageScore">0</span></p>
+   <div id="progressContainer" style="display: none;">
+    <p>Số bài đã làm: <span id="completedExercises">0</span></p>
+    <p>Điểm trung bình: <span id="averageScore">0</span></p>
 </div>
 <div id="mainContent" style="display: none;">
     <!-- Hàng trên cùng: Khung nhập số và các nút liên quan -->
