@@ -255,7 +255,10 @@ button.delete:hover {
         <button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
 	<button id="viewHistoryBtn">Xem lịch sử làm bài</button>
-<div id="historyContainer" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px;"></div>
+<div id="historyContainer" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px; display: none;">
+    <h3>Lịch sử làm bài</h3>
+    <div id="historyContent"></div>
+</div>
     </div>
 
     <!-- Hàng thứ hai: Đề bài -->
@@ -944,41 +947,41 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
     alert('Đã xóa tất cả ảnh và bài giải.');
 });
 document.getElementById('viewHistoryBtn').addEventListener('click', async () => {
-    const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU'; // ID của Google Sheet liên kết với Google Form
-    const historySheetName = 'StudentProgress'; // Tên Sheet chứa dữ liệu
-    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${historySheetName}&tqx=out:json`;
+    const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU'; // Thay bằng ID Google Sheet của bạn
+    const sheetName = 'StudentProgress'; // Tên Sheet chứa dữ liệu lịch sử
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${sheetName}&tqx=out:json`;
 
     try {
-        // Fetch dữ liệu từ Google Sheet
+        // Lấy dữ liệu từ Google Sheet
         const response = await fetch(sheetUrl);
         const text = await response.text();
         const jsonData = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
         const rows = jsonData.table.rows;
 
-        // Lọc lịch sử theo mã học sinh hiện tại
-        const historyHtml = rows
-            .filter(row => row.c[0]?.v === currentStudentId) // Cột A: Mã học sinh
-            .map(row => {
-                const studentName = row.c[1]?.v || 'Không có tên'; // Cột B
-                const problem = row.c[2]?.v || 'Không có đề bài'; // Cột C
-                const score = row.c[3]?.v || '0'; // Cột D
-                const feedback = row.c[4]?.v || 'Không có nhận xét'; // Cột E
-                return `
-                    <div style="margin-bottom: 10px;">
-                        <strong>Tên:</strong> ${studentName}<br>
-                        <strong>Đề bài:</strong> ${problem}<br>
-                        <strong>Điểm:</strong> ${score}<br>
-                        <strong>Nhận xét:</strong> ${feedback}
-                    </div>
-                `;
-            })
-            .join('');
+        // Lọc thông tin lịch sử dựa trên mã học sinh
+        const historyData = rows.filter(row => row.c[0]?.v === currentStudentId); // Lọc theo cột A (Mã học sinh)
+
+        // Tạo HTML hiển thị thông tin
+        const historyHtml = historyData.map(row => {
+            const studentName = row.c[1]?.v || 'Không rõ'; // Cột B: Tên học sinh
+            const completedExercises = row.c[2]?.v || '0'; // Cột C: Số bài tập đã làm
+            const averageScore = row.c[3]?.v || '0'; // Cột D: Điểm trung bình
+            return `
+                <div style="margin-bottom: 15px; padding: 10px; border-bottom: 1px solid #ddd;">
+                    <p><strong>Tên:</strong> ${studentName}</p>
+                    <p><strong>Số bài tập đã làm:</strong> ${completedExercises}</p>
+                    <p><strong>Điểm trung bình:</strong> ${averageScore}</p>
+                </div>
+            `;
+        }).join('');
 
         // Hiển thị lịch sử
         const historyContainer = document.getElementById('historyContainer');
-        historyContainer.innerHTML = historyHtml || 'Không tìm thấy lịch sử làm bài nào.';
+        const historyContent = document.getElementById('historyContent');
+        historyContent.innerHTML = historyHtml || 'Không tìm thấy dữ liệu lịch sử cho mã học sinh này.';
+        historyContainer.style.display = 'block';
     } catch (error) {
-        console.error('Lỗi khi lấy dữ liệu lịch sử:', error);
+        console.error('Lỗi khi tải lịch sử làm bài:', error);
         alert('Không thể tải lịch sử làm bài. Vui lòng thử lại sau.');
     }
 });
