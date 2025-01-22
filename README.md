@@ -283,8 +283,8 @@ button.delete:hover {
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
 	<div id="progressContainer" style="display: none;">
     <div class="progress-box">
-        Số bài đã làm: <span id="completedExercises">0</span> | 
-        Điểm trung bình: <span id="averageScore">0</span>
+        Số bài: <span id="completedExercises">0</span> | 
+        Điểm TB: <span id="averageScore">0</span>
     </div>
 </div>    
     </div>
