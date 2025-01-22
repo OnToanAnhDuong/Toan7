@@ -270,8 +270,7 @@ button.delete:hover {
         <button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
 	<div id="progressContainer" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px; display: none;">
-    <h3>Tiến độ học tập</h3>
-    <p><strong>Số bài đã làm:</strong> <span id="completedExercises">0</span></p>
+   <p><strong>Số bài đã làm:</strong> <span id="completedExercises">0</span></p>
     <p><strong>Điểm trung bình:</strong> <span id="averageScore">0</span></p>
 </div>    
     </div>
