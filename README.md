@@ -101,11 +101,6 @@
             background-color: rgba(0,0,0,0.5);
             z-index: 999;
         }
-	#cameraContainer {
-    margin-top: 20px;
-    text-align: center;
-}
-
 #cameraStream {
     width: 100%; /* Chiều rộng đầy đủ trong container cha */
     height: auto; /* Tự động điều chỉnh chiều cao dựa trên tỷ lệ video */
@@ -115,7 +110,6 @@
     border: 1px solid #ddd;
     border-radius: 5px;
 }
-
 #captureButton {
     margin-top: 10px;
     padding: 10px 20px;
@@ -125,7 +119,6 @@
     font-size: 16px;
     cursor: pointer;
 }
-
 #captureButton:hover {
     background-color: #0056b3;
 }
@@ -143,7 +136,6 @@
     gap: 20px; /* Khoảng cách giữa các phần tử */
     margin-top: 20px;
 }
-
 #videoContainer, #imageContainer {
     display: flex;
     flex-direction: column; /* Nội dung bên trong sắp xếp dọc */
@@ -157,7 +149,6 @@
     gap: 20px; /* Khoảng cách giữa các phần tử */
     margin-bottom: 20px; /* Khoảng cách dưới hàng */
 }
-
 #topControls input[type="number"] {
     width: 200px; /* Đặt chiều rộng cho khung nhập số */
     padding: 8px;
@@ -185,7 +176,6 @@
     margin-top: 20px;
     width: 100%; /* Chiếm toàn bộ chiều ngang */
 }
-
 #problemText {
     font-size: 18px;
     border: 1px solid #ddd;
@@ -203,7 +193,6 @@
     gap: 20px; /* Khoảng cách giữa các nút */
     margin-top: 20px; /* Khoảng cách trên hàng */
 }
-
 #bottomControls button {
     padding: 10px 20px;
     background-color: #5cb85c;
@@ -287,17 +276,12 @@ button.delete:hover {
         <img id="capturedImage" alt="Ảnh đã chụp" style="max-width: 100%; display: none;">
     </div>
 </div>
-          
     </div>
-
     <script>
         const SHEET_ID = '175acnaYklfdCc_UJ7B3LJgNaUJpfrIENxn6LN76QADM';
         const SHEET_NAME = 'Toan6';
         const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${SHEET_NAME}&tq=&tqx=out:json`;
-
-        const API_KEYS = ['AIzaSyCzh6doVzV7Dbmbz60B9pNUQIel2N6KEcI', 'AIzaSyBVQcUrVTtwKeAAsFR8ENM8-kgZl8CsUM0', 'AIzaSyCmY4FdhZ4qSN6HhBtldgQgSNbDlZ4J1ug', 'AIzaSyAkX3rMYxN_-aO95QKMPy-OLIV62esaANU', 'AIzaSyDtmacgYKn1PBgCVWkReF9Kyn6vC4DKZmg', 'AIzaSyAusgvzZkUPT9lHoB7vzZW_frx-Z0xIxU8', 'AIzaSyBBNxoJh9UZXbc4shgRc7nUiJKya3JR2eI', 'AIzaSyAru8K7uUTD85FOCmrNESQmQYh-gfFCOZ8', 'AIzaSyAkDbRl7iBYWhc00KZ9dZL1_l0cobcC0ak', 'AIzaSyAJ9DpLy4uLfbFoyh7IhW9N0uk9YkBEUY4'];
-
-        
+ const API_KEYS = ['AIzaSyCzh6doVzV7Dbmbz60B9pNUQIel2N6KEcI', 'AIzaSyBVQcUrVTtwKeAAsFR8ENM8-kgZl8CsUM0', 'AIzaSyCmY4FdhZ4qSN6HhBtldgQgSNbDlZ4J1ug', 'AIzaSyAkX3rMYxN_-aO95QKMPy-OLIV62esaANU', 'AIzaSyDtmacgYKn1PBgCVWkReF9Kyn6vC4DKZmg', 'AIzaSyAusgvzZkUPT9lHoB7vzZW_frx-Z0xIxU8', 'AIzaSyBBNxoJh9UZXbc4shgRc7nUiJKya3JR2eI', 'AIzaSyAru8K7uUTD85FOCmrNESQmQYh-gfFCOZ8', 'AIzaSyAkDbRl7iBYWhc00KZ9dZL1_l0cobcC0ak', 'AIzaSyAJ9DpLy4uLfbFoyh7IhW9N0uk9YkBEUY4'];     
         let currentKeyIndex = 0;
         let problems = [];
         let currentProblem = null;
@@ -314,7 +298,6 @@ button.delete:hover {
             currentKeyIndex = (currentKeyIndex + 1) % API_KEYS.length;
             return key;
         }
-
         async function makeApiRequest(apiUrl, requestBody) {
             let attempts = 0;
             while (attempts < API_KEYS.length) {
@@ -325,8 +308,7 @@ button.delete:hover {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(requestBody)
                     });
-                    
-                    if (response.ok) {
+                     if (response.ok) {
                         return await response.json();
                     } else if (response.status === 403) {
                         console.log(`API key expired or invalid: ${apiKey}`);
@@ -341,7 +323,6 @@ button.delete:hover {
             }
             throw new Error('All API keys have been exhausted or are invalid.');
         }
-
       async function fetchProblems() {
     try {
         const response = await fetch(SHEET_URL);
@@ -364,14 +345,12 @@ button.delete:hover {
         problem: row.c[1]?.v.replace(/\r\n|\r|\n/g, '\n') || '' // Cột đề bài
     })).filter(item => item.problem && item.index);
 }
-
-        function displayNextProblem() {
+function displayNextProblem() {
     if (problems.length > 0) {
         // Nếu chỉ số hiện tại vượt quá số bài, quay lại bài đầu tiên (tuỳ chọn)
         if (currentProblemIndex >= problems.length) {
             currentProblemIndex = 0;
         }
-
         // Lấy bài tập theo thứ tự
         currentProblem = problems[currentProblemIndex];
         currentProblemIndex++; // Tăng chỉ số lên bài tiếp theo
@@ -389,8 +368,7 @@ function displayProblemByIndex(index) {
         document.getElementById('problemText').textContent = 'Danh sách bài tập chưa được tải. Vui lòng thử lại.';
         return;
     }
-
-    const selectedProblem = problems.find(problem => parseInt(problem.index) === parseInt(index));
+const selectedProblem = problems.find(problem => parseInt(problem.index) === parseInt(index));
     if (selectedProblem) {
         document.getElementById('problemText').innerHTML = formatProblemText(selectedProblem.problem);
         MathJax.typesetPromise([document.getElementById('problemText')]).catch(function (err) {
@@ -400,9 +378,8 @@ function displayProblemByIndex(index) {
         document.getElementById('problemText').textContent = `Không tìm thấy bài tập với số thứ tự ${index}.`;
     }
 }
-
-        function formatProblemText(problemText) {
-            return problemText.replace(/\n/g, '<br>').replace(/([a-d]\))/g, '<br>$1');
+ function formatProblemText(problemText) {
+        return problemText.replace(/\n/g, '<br>').replace(/([a-d]\))/g, '<br>$1');
         }
 function checkCameraAccess() {
     navigator.mediaDevices.enumerateDevices()
@@ -414,8 +391,6 @@ function checkCameraAccess() {
         })
         .catch(error => console.error('Lỗi khi kiểm tra thiết bị camera:', error));
 }
-
-
         // Hàm cập nhật số bài đã làm và điểm trung bình
         function updateProgress(newScore) {
             completedProblems++;
@@ -442,8 +417,7 @@ function checkCameraAccess() {
                 alert('Vui lòng nhập mã học sinh');
             }
         });    
-
-        async function generateSimilarProblem(originalProblem) {
+ async function generateSimilarProblem(originalProblem) {
             const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-002:generateContent';
             const promptText = `
             Bạn hãy tạo một bài toán tương tự bài sau bằng cách thay đổi các số liệu một cách phù hợp, nhưng giữ nguyên cấu trúc và dạng toán:
@@ -471,8 +445,7 @@ function checkCameraAccess() {
                 return `Đã xảy ra lỗi: ${error.message}`;
             }
         }
-
-        async function generateHint(problemText) {
+ async function generateHint(problemText) {
             const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-002:generateContent';
             const promptText = `
             Đề bài:
@@ -483,7 +456,6 @@ function checkCameraAccess() {
             2. Hướng dẫn học sinh về hướng giải quyết hoặc công thức cần sử dụng
             3. Khuyến khích học sinh suy nghĩ độc lập
             4. Phân chia gợi ý theo cấu trúc của đề bài (nếu có các phần a, b, c)
-
             Gợi ý:
             `;
             const requestBody = {
@@ -533,7 +505,6 @@ function checkCameraAccess() {
             - Hãy đảm bảo tính chính xác và khách quan trong việc chấm điểm và nhận xét.
             - Nếu có sự không nhất quán giữa bài làm và điểm số, hãy giải thích rõ lý do.
             `;
-
             const requestBody = {
                 contents: [
                     {
@@ -570,7 +541,6 @@ function checkCameraAccess() {
             const entryFeedback = 'entry.34713471';
 	    const entryScore = 'entry.413593378';
 	    const entryTen = 'entry.1135916403';
-
             const formData = new URLSearchParams();
             formData.append(entryName, `${studentId}`);
             formData.append(entryProblem, problemText || 'Không có đề bài');
@@ -578,9 +548,7 @@ function checkCameraAccess() {
             formData.append(entryFeedback, feedback || 'Không có phản hồi');
 	    formData.append(entryScore, score || '0');
 	    formData.append(entryTen, `${studentName}`);
- 
-
-            try {
+             try {
                 const response = await fetch(`https://docs.google.com/forms/d/e/${formId}/formResponse`, {
                     method: 'POST',
                     mode: 'no-cors',
@@ -611,8 +579,7 @@ function checkCameraAccess() {
                 problemText = await generateSimilarProblem(problemText);
                 problemText = formatProblemText(problemText);
                 document.getElementById('problemText').innerHTML = problemText;
-                currentHint = await generateHint(problemText);
-                MathJax.typesetPromise([document.getElementById('problemText')]).catch(function (err) {
+                currentHint = await generateHint(problemText);               MathJax.typesetPromise([document.getElementById('problemText')]).catch(function (err) {
                     console.error('MathJax rendering error:', err);
                 });
             } else {
@@ -639,7 +606,6 @@ function checkCameraAccess() {
                 return false;
             }
         }
-
         async function updateProgress(score) {
     if (!currentStudentId) {
         console.error('No currentStudentId provided.');
@@ -654,37 +620,30 @@ function checkCameraAccess() {
         if (!response.ok) {
             throw new Error(`Failed to fetch progress: ${response.statusText}`);
         }
-
         const text = await response.text();
         console.log('Response from Google Sheet:', text);
 
         const jsonData = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
         const rows = jsonData.table.rows;
         console.log('Parsed Rows:', rows);
-
         let studentRow = rows.find(row => row.c[0]?.v.trim().toLowerCase() === currentStudentId.trim().toLowerCase());
         if (studentRow) {
             console.log('Student Row Data:', studentRow);
-
-            let completedProblems = parseInt(studentRow.c[1]?.v || '0') + 1; // Số bài đã làm
+        let completedProblems = parseInt(studentRow.c[1]?.v || '0') + 1; // Số bài đã làm
             let totalScore = parseFloat(studentRow.c[2]?.v || '0') + score; // Tổng điểm
             let averageScore = totalScore / completedProblems; // Điểm trung bình
-
-            console.log('Computed Values:', { completedProblems, totalScore, averageScore });
-
+        console.log('Computed Values:', { completedProblems, totalScore, averageScore });
             // Cập nhật giao diện
             const completedElem = document.getElementById('completedProblems');
             const averageElem = document.getElementById('averageScore');
             if (completedElem && averageElem) {
                 completedElem.textContent = completedProblems; // Hiển thị số bài
-                averageElem.textContent = averageScore.toFixed(2); // Hiển thị điểm trung bình
+        averageElem.textContent = averageScore.toFixed(2); // Hiển thị điểm trung bình
             } else {
                 console.error('Progress elements not found in DOM.');
             }
-
             // Cập nhật Google Sheet
-            await updateGoogleSheetData(currentStudentId, completedProblems, totalScore);
-
+await updateGoogleSheetData(currentStudentId, completedProblems, totalScore);
         } else {
             console.error('Student ID not found in Google Sheet.');
             document.getElementById('completedProblems').textContent = '0';
@@ -694,26 +653,20 @@ function checkCameraAccess() {
         console.error('Error updating progress:', error.message, error.stack);
    	 }
 	}
-
         function showMessageBox(message) {
             const overlay = document.createElement('div');
-            overlay.className = 'message-box-overlay';
-            
+            overlay.className = 'message-box-overlay';          
             const messageBox = document.createElement('div');
             messageBox.className = 'message-box';
             messageBox.innerHTML = `
                 <p>${message}</p>
-                <button onclick="this.parentElement.parentElement.remove()">Đóng</button>
-            `;
-            
+<button onclick="this.parentElement.parentElement.remove()">Đóng</button>;           
             overlay.appendChild(messageBox);
-            document.body.appendChild(overlay);
-        }
-
+            document.body.appendChild(overlay); 
+	    }
        document.getElementById('submitBtn').addEventListener('click', async () => {
     const problemText = document.getElementById('problemText')?.innerHTML?.trim();
     const studentFileInput = document.getElementById('studentImage');
-
     if (!problemText) {
         alert('Vui lòng đợi đề bài được tải.');
         return;
@@ -723,7 +676,6 @@ function checkCameraAccess() {
     alert('Vui lòng chọn hoặc chụp ảnh bài làm của học sinh.');
     return;
 }
-
     // Ưu tiên ảnh từ camera, nếu không có thì sử dụng ảnh tải lên từ file
     const imageToProcess = base64Image || (studentFileInput.files.length > 0 ? await getBase64(studentFileInput.files[0]) : null);
 
@@ -734,12 +686,9 @@ function checkCameraAccess() {
 
     try {
         document.getElementById('result').innerText = 'Đang xử lý...';
-
         // Gửi ảnh để chấm bài
         const { studentAnswer, feedback, score } = await gradeWithGemini(imageToProcess, problemText, currentStudentId);
-
         const submitted = await submitToGoogleForm(score, currentStudentId, problemText, studentAnswer, feedback, studentName);
-
         if (submitted) {
             document.getElementById('result').innerHTML = feedback;
             MathJax.typesetPromise([document.getElementById('result')]).catch(err => console.error('MathJax rendering error:', err));
@@ -752,12 +701,11 @@ function checkCameraAccess() {
         document.getElementById('result').innerText = `Đã xảy ra lỗi: ${error.message}. Vui lòng thử lại sau.`;
     }
 });
-
-        document.getElementById('randomProblemBtn').addEventListener('click', () => {
+  document.getElementById('randomProblemBtn').addEventListener('click', () => {
             displayRandomProblem();
         });
 
-        document.getElementById('hintBtn').addEventListener('click', () => {
+document.getElementById('hintBtn').addEventListener('click', () => {
             if (currentHint) {
                 showMessageBox(currentHint);
             } else {
@@ -765,8 +713,8 @@ function checkCameraAccess() {
             }
         });
 
-        document.getElementById('loginBtn').addEventListener('click', async () => {
-            const studentId = document.getElementById('studentId').value.trim();
+document.getElementById('loginBtn').addEventListener('click', async () => {
+        const studentId = document.getElementById('studentId').value.trim();
             if (studentId) {
                 const isValidStudent = await checkStudentId(studentId);
                 if (isValidStudent) {
@@ -783,7 +731,6 @@ function checkCameraAccess() {
                 alert('Vui lòng nhập mã học sinh');
             }
         });
-
 	document.getElementById('selectProblemBtn').addEventListener('click', async () => {
     const problemIndexInput = document.getElementById('problemIndexInput').value.trim();
 
@@ -792,14 +739,11 @@ function checkCameraAccess() {
         alert('Vui lòng nhập số thứ tự bài cần chọn.');
         return;
     }
-
     // Tìm bài tập theo số thứ tự
     const selectedProblem = problems.find(problem => parseInt(problem.index) === parseInt(problemIndexInput));
-
     if (selectedProblem) {
         // Hiển thị đề bài
         document.getElementById('problemText').innerHTML = formatProblemText(selectedProblem.problem);
-
         // Gọi hàm generateHint() để tạo gợi ý
         try {
             currentHint = await generateHint(selectedProblem.problem);
@@ -818,16 +762,13 @@ function checkCameraAccess() {
         document.getElementById('problemText').textContent = `Không tìm thấy bài tập với số thứ tự ${problemIndexInput}.`;
     }
 });
-
-	document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
     const video = document.getElementById('cameraStream');
     const captureButton = document.getElementById('captureButton');
     const canvas = document.getElementById('photoCanvas');
-    const img = document.getElementById('capturedImage');
-  
+    const img = document.getElementById('capturedImage'); 
     checkCameraAccess(); // Kiểm tra thiết bị
     startCamera(); // Bắt đầu camera
-
     async function startCamera() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -843,7 +784,6 @@ function checkCameraAccess() {
             }
         }
     }
-
     function checkCameraAccess() {
         navigator.mediaDevices.enumerateDevices()
             .then(devices => {
@@ -859,7 +799,6 @@ captureButton.addEventListener('click', () => {
         alert('Camera chưa sẵn sàng. Vui lòng đợi.');
         return;
     }
-
     // Tính toán tỷ lệ khung hình mong muốn (1.5:1)
     const desiredAspectRatio = 1.5; // Chiều cao gấp 1.5 lần chiều rộng
     const videoWidth = video.clientWidth;
@@ -881,19 +820,14 @@ captureButton.addEventListener('click', () => {
         // Video quá rộng, cắt bớt chiều rộng
         sWidth = video.videoHeight / desiredAspectRatio;
         sx = (video.videoWidth - sWidth) / 2; // Cắt đều hai bên
-    }
-	
+    }	
     // Vẽ nội dung video lên canvas với kích thước và tỷ lệ đã tính toán
     const context = canvas.getContext('2d');
     context.drawImage(video, sx, sy, sWidth, sHeight, 0, 0, canvas.width, canvas.height);
-	 
-
     // Chuyển đổi canvas thành Base64 (JPEG, chất lượng 0.9)
     const base64Data = canvas.toDataURL('image/jpeg', 0.9);
     base64Image = base64Data.split(',')[1]; // Loại bỏ tiền tố "data:image/jpeg;base64,"
-
     console.log('Base64 Image:', base64Image.substring(0, 100), '...'); // Log 100 ký tự đầu để kiểm tra
-
     // Hiển thị ảnh chụp
     img.src = base64Data;
     img.style.display = 'block';
@@ -901,9 +835,7 @@ captureButton.addEventListener('click', () => {
 if (!imageContainer.contains(img)) {
     imageContainer.appendChild(img); // Đảm bảo ảnh nằm trong `#imageContainer`
 }
-
 });
-
 document.getElementById('deleteAllBtn').addEventListener('click', () => {
     // Xóa ảnh được hiển thị
     const img = document.getElementById('capturedImage');
@@ -924,7 +856,6 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
 });
 
 });
-
             // Các đoạn mã ngăn chặn xem mã nguồn và bảo vệ nội dung
         (function() {
             // Vô hiệu hóa nhấp chuột phải
