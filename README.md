@@ -178,36 +178,39 @@
 } 
 /* Hàng trên cùng: Khung nhập số và các nút */
 #topControls {
-    height: 40px; /* Đặt chiều cao bằng với các nút */
     display: flex; /* Sắp xếp các phần tử trên một hàng ngang */
     justify-content: center; /* Căn giữa các phần tử */
+    align-items: center; /* Căn giữa theo chiều dọc */
     gap: 20px; /* Khoảng cách giữa các phần tử */
     margin-bottom: 20px; /* Khoảng cách dưới hàng */
+    height: auto; /* Chiều cao tự động theo phần tử con */
     box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước */
 }
 
 #topControls input[type="number"] {
     width: 200px; /* Đặt chiều rộng cho khung nhập số */
-    height: 40px; /* Chiều cao bằng dòng thông báo */
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+    height: 40px; /* Chiều cao khớp với nút */
+    padding: 5px 10px; /* Giảm padding để khớp với nút */
+    border: 1px solid #ddd; /* Viền xám nhạt */
+    border-radius: 5px; /* Bo góc nhẹ */
+    font-size: 14px; /* Cỡ chữ nhỏ hơn một chút */
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước */
 }
 
 #topControls button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    height: 40px; /* Chiều cao bằng dòng thông báo */
+    padding: 0 15px; /* Giảm padding để khớp chiều cao với input */
+    background-color: #007bff; /* Màu nền xanh */
+    color: white; /* Màu chữ trắng */
+    border: none; /* Loại bỏ viền */
+    border-radius: 5px; /* Bo góc nhẹ */
+    font-size: 14px; /* Cỡ chữ nhỏ hơn */
+    cursor: pointer; /* Con trỏ dạng tay */
+    height: 40px; /* Đảm bảo chiều cao khớp với input */
+    line-height: 1; /* Đảm bảo nội dung căn giữa */
 }
 
 #topControls button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Màu xanh đậm hơn khi rê chuột */
 }
 
 /* Hàng thứ hai: Phần đề bài */
