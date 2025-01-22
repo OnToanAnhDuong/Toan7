@@ -104,13 +104,13 @@
             z-index: 999;
         }
 	#progressContainer {
-        margin-top: 20px;
-        background-color: #eef9ff;
-        padding: 15px;
-        border: 1px solid #007bff;
-        border-radius: 5px;
-        font-size: 16px;
-    }
+    margin-top: 20px;
+    background-color: transparent; /* Loại bỏ nền */
+    padding: 0; /* Loại bỏ khoảng cách bên trong */
+    border: none; /* Loại bỏ đường viền */
+    border-radius: 0; /* Loại bỏ bo góc */
+    font-size: 16px; /* Giữ nguyên cỡ chữ nếu muốn */
+}
    
    #progressContainer p {
     font-family: Arial, sans-serif;
