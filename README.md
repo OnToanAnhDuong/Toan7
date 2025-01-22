@@ -186,6 +186,7 @@
 
 #topControls input[type="number"] {
     width: 200px; /* Đặt chiều rộng cho khung nhập số */
+    height: 40px;
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -204,7 +205,7 @@
 }
 
 #topControls button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Màu khi rê chuột */
 }
 
 /* Hàng thứ hai: Phần đề bài */
