@@ -178,14 +178,17 @@
 } 
 /* Hàng trên cùng: Khung nhập số và các nút */
 #topControls {
+    height: 40px; /* Đặt chiều cao bằng với các nút */
     display: flex; /* Sắp xếp các phần tử trên một hàng ngang */
     justify-content: center; /* Căn giữa các phần tử */
     gap: 20px; /* Khoảng cách giữa các phần tử */
     margin-bottom: 20px; /* Khoảng cách dưới hàng */
+    box-sizing: border-box; /* Đảm bảo padding không làm thay đổi kích thước */
 }
 
 #topControls input[type="number"] {
     width: 200px; /* Đặt chiều rộng cho khung nhập số */
+    height: 40px; /* Chiều cao bằng dòng thông báo */
     padding: 8px;
     border: 1px solid #ddd;
     border-radius: 5px;
@@ -200,6 +203,7 @@
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
+    height: 40px; /* Chiều cao bằng dòng thông báo */
 }
 
 #topControls button:hover {
