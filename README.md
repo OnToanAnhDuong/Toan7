@@ -255,6 +255,7 @@ button.delete:hover {
         <button id="selectProblemBtn">Hiển thị bài tập</button>
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
 	<button id="viewHistoryBtn">Xem lịch sử làm bài</button>
+<div id="historyContainer" style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px;"></div>
     </div>
 
     <!-- Hàng thứ hai: Đề bài -->
@@ -943,22 +944,42 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
     alert('Đã xóa tất cả ảnh và bài giải.');
 });
 document.getElementById('viewHistoryBtn').addEventListener('click', async () => {
-    const historyUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=StudentProgress&tqx=out:json`;
+    const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU'; // ID của Google Sheet liên kết với Google Form
+    const historySheetName = 'StudentProgress'; // Tên Sheet chứa dữ liệu
+    const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${historySheetName}&tqx=out:json`;
+
     try {
-        const response = await fetch(historyUrl);
+        // Fetch dữ liệu từ Google Sheet
+        const response = await fetch(sheetUrl);
         const text = await response.text();
         const jsonData = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S\w]+)\)/)[1]);
         const rows = jsonData.table.rows;
-        let historyHtml = '<h3>Lịch sử làm bài:</h3><ul>';
-        rows.forEach(row => {
-            if (row.c[0]?.v === currentStudentId) {
-                historyHtml += `<li>${row.c[1]?.v || 'Bài tập'} - Điểm: ${row.c[2]?.v || '0'}</li>`;
-            }
-        });
-        historyHtml += '</ul>';
-        document.getElementById('result').innerHTML = historyHtml;
+
+        // Lọc lịch sử theo mã học sinh hiện tại
+        const historyHtml = rows
+            .filter(row => row.c[0]?.v === currentStudentId) // Cột A: Mã học sinh
+            .map(row => {
+                const studentName = row.c[1]?.v || 'Không có tên'; // Cột B
+                const problem = row.c[2]?.v || 'Không có đề bài'; // Cột C
+                const score = row.c[3]?.v || '0'; // Cột D
+                const feedback = row.c[4]?.v || 'Không có nhận xét'; // Cột E
+                return `
+                    <div style="margin-bottom: 10px;">
+                        <strong>Tên:</strong> ${studentName}<br>
+                        <strong>Đề bài:</strong> ${problem}<br>
+                        <strong>Điểm:</strong> ${score}<br>
+                        <strong>Nhận xét:</strong> ${feedback}
+                    </div>
+                `;
+            })
+            .join('');
+
+        // Hiển thị lịch sử
+        const historyContainer = document.getElementById('historyContainer');
+        historyContainer.innerHTML = historyHtml || 'Không tìm thấy lịch sử làm bài nào.';
     } catch (error) {
-        console.error('Lỗi khi tải lịch sử làm bài:', error);
+        console.error('Lỗi khi lấy dữ liệu lịch sử:', error);
+        alert('Không thể tải lịch sử làm bài. Vui lòng thử lại sau.');
     }
 });
 
