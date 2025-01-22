@@ -106,19 +106,7 @@
         }
 	#progressContainer {
     margin-top: 20px;
-    font-size: 16px; /* Cỡ chữ chung */
     text-align: left; /* Căn trái nội dung */
-}
-
-#progressContainer span {
-    color: red; /* Màu chữ đỏ */
-    font-weight: bold; /* Làm đậm chữ */
-}
-
-#progressContainer p {
-    margin: 0; /* Loại bỏ khoảng cách mặc định */
-    display: inline-block; /* Căn chỉnh để các đoạn văn không kéo dài */
-    line-height: 40px; /* Căn chỉnh chiều cao bằng các nút */
 }
 
 .progress-box {
@@ -303,8 +291,10 @@ button.delete:hover {
         <button id="randomProblemBtn">Lấy bài tập ngẫu nhiên</button>
 	<div id="progressContainer" style="display: none;">
    <div id="progressContainer" style="display: none;">
-    <p>Số bài đã làm: <span id="completedExercises">0</span></p>
-    <p> | Điểm trung bình: <span id="averageScore">0</span></p>
+    <div class="progress-box">
+        Số bài: <span id="completedExercises">0</span> | 
+        Điểm TB: <span id="averageScore">0</span>
+    </div>
 </div>
 </div>    
     </div>
