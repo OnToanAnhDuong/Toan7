@@ -43,6 +43,9 @@
             padding: 15px;
             border-radius: 5px;
         }
+	p#breadcrumb {
+    display: none;
+}
         #problemText {
             font-size: 18px;
             margin-bottom: 20px;
