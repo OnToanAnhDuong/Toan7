@@ -947,8 +947,8 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
     alert('Đã xóa tất cả ảnh và bài giải.');
 });
 document.getElementById('viewHistoryBtn').addEventListener('click', async () => {
-    const sheetId = 'YOUR_GOOGLE_SHEET_ID'; // Thay bằng ID Google Sheet
-    const sheetName = 'FormResponses'; // Tên Sheet
+    const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU'; // Thay bằng ID Google Sheet
+    const sheetName = 'StudentProgress'; // Tên Sheet
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${sheetName}&tqx=out:json`;
 
     try {
