@@ -111,14 +111,18 @@
         border-radius: 5px;
         font-size: 16px;
     }
-    #progressContainer h3 {
-        color: #007bff;
-    }
-    #progressContainer p {
-        margin: 5px 0;
-        line-height: 1.5;
-    }
-	#cameraContainer {
+   
+   #progressContainer p {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+    margin: 5px 0;
+}
+#progressContainer span {
+    font-weight: bold;
+    color: red; /* Màu đỏ để làm nổi bật */
+}
+	    #cameraContainer {
     margin-top: 20px;
     text-align: center;
 }
