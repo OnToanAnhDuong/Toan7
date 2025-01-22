@@ -257,7 +257,7 @@ button.delete:hover {
     </script>
 </head>
 <body>
-    <h1>ÔN LYỆN TOÁN LỚP 6  - TRUNG TÂM ÁNH DƯƠNG</h1>
+    <h1>ÔN LYỆN TOÁN LỚP 7  - TRUNG TÂM ÁNH DƯƠNG</h1>
     
     <div id="loginContainer">
         <input type="text" id="studentId" placeholder="Nhập mã học sinh">
@@ -961,8 +961,8 @@ document.getElementById('deleteAllBtn').addEventListener('click', () => {
     alert('Đã xóa tất cả ảnh và bài giải.');
 });
 document.getElementById('loginBtn').addEventListener('click', async () => {
-    const sheetId = 'YOUR_GOOGLE_SHEET_ID'; // ID Google Sheet
-    const sheetName = 'FormResponses'; // Tên tab trong Google Sheet
+    const sheetId = '165WblAAVsv_aUyDKjrdkMSeQ5zaLiUGNoW26ZFt5KWU'; // ID Google Sheet
+    const sheetName = 'StudentProgress'; // Tên tab trong Google Sheet
     const sheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?sheet=${sheetName}&tqx=out:json`;
 
     const studentId = document.getElementById('studentId').value.trim();
