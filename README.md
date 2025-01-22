@@ -63,6 +63,7 @@
         #randomProblemBtn, #loginBtn {
             display: block;
             width: 30%;
+	    height: 40px;
             margin-bottom: 10px;
             padding: 10px;
             background-color: #007bff;
@@ -199,6 +200,7 @@
     border-radius: 5px;
     font-size: 16px;
     cursor: pointer;
+     height: 40px;
 }
 
 #topControls button:hover {
