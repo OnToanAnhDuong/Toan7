@@ -62,7 +62,7 @@
         }
         #randomProblemBtn, #loginBtn {
             display: block;
-            width: 50%;
+            width: 30%;
             margin-bottom: 10px;
             padding: 10px;
             background-color: #007bff;
