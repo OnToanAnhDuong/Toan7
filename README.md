@@ -99,23 +99,8 @@
             bottom: 0;
             background-color: rgba(0,0,0,0.5);
             z-index: 999;
-        }
-	 #progressContainer {
-        margin-top: 20px;
-        background-color: #eef9ff;
-        padding: 15px;
-        border: 1px solid #007bff;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-    #progressContainer h3 {
-        color: #007bff;
-    }
-    #progressContainer p {
-        margin: 5px 0;
-        line-height: 1.5;
-    }
-	    #cameraContainer {
+        }	 
+#cameraContainer {
     margin-top: 20px;
     text-align: center;
 }
@@ -263,10 +248,8 @@ button.delete:hover {
         <input type="text" id="studentId" placeholder="Nhập mã học sinh">
         <button id="loginBtn">Đăng nhập</button>
     </div>
-   <div id="progressContainer" style="margin-top: 20px;">
-    <p>Số bài đã làm: <span id="completedExercises" style="color: red; font-weight: bold;">0</span></p>
-    <p>Điểm trung bình: <span id="averageScore" style="color: red; font-weight: bold;">0</span></p>
-</div>
+  <p>Số bài đã làm: <span id="completedExercises" style="color: red; font-weight: bold;">0</span></p>
+<p>Điểm trung bình: <span id="averageScore" style="color: red; font-weight: bold;">0</span></p>
 <div id="mainContent" style="display: none;">
     <!-- Hàng trên cùng: Khung nhập số và các nút liên quan -->
     <div id="topControls">
